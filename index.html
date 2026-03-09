@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robella Bakery - Calcolatore Professionale</title>
     <style>
-        /* --- STILE PROFESSIONALE "ROBELLA BAKERY" --- */
+        /* --- STILE PROFESSIONALE E PULITO "ROBELLA BAKERY" --- */
         :root {
-            --primary-color: #e67e22; /* Arancione Crosta */
+            --primary-color: #e67e22; /* Arancione Bruciato Crosta */
             --secondary-color: #2c3e50; /* Blu Scuro Testo */
-            --accent-color: #f1c40f; /* Giallo Oro */
-            --success-color: #27ae60; /* Verde Tasto */
-            --bg-color: #fdfcfb; /* Crema chiarissimo */
+            --accent-color: #f1c40f; /* Giallo Oro Oro */
+            --success-color: #27ae60; /* Verde Azione */
+            --bg-color: #fffaf8; /* Crema Chiarissimo */
             --text-color: #34495e;
-            --border-radius: 12px;
+            --border-radius: 16px;
         }
 
+        /* SFONDO LEGGERO CON EMOJI SUBDOLE (SVG in CSS per leggerezza) */
         body { 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--bg-color); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100'%3E%3Ctext y='30' font-size='24' opacity='0.02'%3E🍞%3C/text%3E%3Ctext x='50' y='60' font-size='24' opacity='0.02'%3E🍕%3C/text%3E%3Ctext x='20' y='90' font-size='24' opacity='0.02'%3E🥖%3C/text%3E%3Ctext x='70' y='20' font-size='24' opacity='0.02'%3E🥐%3C/text%3E%3C/svg%3E");
             color: var(--text-color); 
             padding: 20px; 
             margin: 0;
@@ -29,61 +31,64 @@
         }
 
         .container { 
-            background-color: #fff; 
-            padding: 30px; 
+            background-color: rgba(255, 255, 255, 0.98); 
+            padding: 35px; 
             border-radius: var(--border-radius); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
-            max-width: 480px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06); 
+            max-width: 500px; 
             width: 100%; 
-            border: 1px solid #f1f1f1;
+            border: 1px solid rgba(241, 241, 241, 0.8);
+            backdrop-filter: blur(2px);
+            transition: transform 0.3s;
         }
 
-        /* Header e Logo */
+        /* Header Professionale */
         .header-logo {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 15px;
+            margin-bottom: 35px;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 20px;
         }
 
         h1 { 
             color: var(--primary-color); 
             margin: 0;
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
             text-transform: uppercase;
         }
 
         .subtitle {
             color: var(--secondary-color);
-            font-size: 14px;
-            margin-top: 5px;
-            font-weight: 400;
-            opacity: 0.8;
+            font-size: 15px;
+            margin-top: 8px;
+            font-weight: 500;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
         }
 
-        /* Form Group */
+        /* Form Group Pulito */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         label { 
-            font-weight: 600; 
+            font-weight: 700; 
             display: block; 
-            margin-bottom: 8px; 
+            margin-bottom: 10px; 
             color: var(--secondary-color);
-            font-size: 15px;
+            font-size: 16px;
         }
 
         select, input { 
             width: 100%; 
-            padding: 15px; 
+            padding: 16px; 
             border: 2px solid #eaeaea; 
-            border-radius: var(--border-radius); 
+            border-radius: 10px; 
             box-sizing: border-box; 
             font-size: 16px; 
-            transition: all 0.2s;
+            transition: all 0.2s ease-in-out;
             background-color: #fff;
             color: var(--text-color);
         }
@@ -91,72 +96,81 @@
         select:focus, input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+            box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.12);
         }
 
-        /* Button */
+        /* Button Moderno e Pulito */
         button { 
             width: 100%; 
             padding: 18px; 
             background-color: var(--success-color); 
+            background-image: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
             color: white; 
             border: none; 
-            border-radius: var(--border-radius); 
+            border-radius: 12px; 
             font-size: 18px; 
-            font-weight: 700; 
+            font-weight: 800; 
             cursor: pointer; 
-            margin-top: 10px; 
-            box-shadow: 0 5px 0 #1e8449; 
-            transition: all 0.1s; 
+            margin-top: 15px; 
+            box-shadow: 0 6px 0 #1e8449, 0 8px 15px rgba(39, 174, 96, 0.3); 
+            transition: all 0.1s ease-in-out; 
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         button:hover {
             background-color: #2ecc71;
+            box-shadow: 0 5px 0 #1e8449, 0 10px 20px rgba(39, 174, 96, 0.4);
         }
 
         button:active { 
-            transform: translateY(3px); 
+            transform: translateY(4px); 
             box-shadow: 0 2px 0 #1e8449; 
         }
 
-        /* Risultati */
+        /* Risultati come Scheda Ricetta */
         #risultato { 
-            margin-top: 35px; 
-            padding: 20px; 
+            margin-top: 40px; 
+            padding: 25px; 
             background-color: #fff; 
-            border: 1px solid #eee;
+            border: 2px solid #f1f1f1;
             border-radius: var(--border-radius); 
             display: none; 
-            animation: fadeIn 0.4s;
+            animation: fadeInRecipe 0.5s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInRecipe {
+            from { opacity: 0; transform: translateY(20px); scale: 0.98; }
+            to { opacity: 1; transform: translateY(0); scale: 1; }
         }
 
         h3 {
             text-align: center;
             color: var(--secondary-color);
             margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 18px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 19px;
+            border-bottom: 1px solid #f1f1f1;
+            padding-bottom: 12px;
+            font-weight: 800;
         }
 
         .ingrediente { 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            padding: 12px 5px; 
+            padding: 14px 10px; 
             border-bottom: 1px solid #f9f9f9; 
+            transition: background-color 0.2s;
         }
 
         .ingrediente:last-of-type {
             border-bottom: 2px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .ingrediente:hover {
+            background-color: #fafafa;
         }
 
         .ingrediente span {
@@ -166,31 +180,33 @@
 
         .ingrediente strong {
             color: var(--secondary-color);
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 19px;
+            font-weight: 800;
         }
 
-        /* Box Riepilogo e Speciali */
+        /* Box Riepilogo Pulito */
         .info-box { 
-            margin-top: 20px; 
-            padding: 15px; 
-            background-color: #f8f9fa; 
-            border-radius: 8px; 
+            margin-top: 15px; 
+            padding: 16px; 
+            background-color: #fbfbfc; 
+            border-radius: 10px; 
             font-size: 14px; 
             color: var(--secondary-color);
             text-align: center;
             border: 1px solid #eee;
         }
 
+        /* Box Speciali più Visibili */
         .extra-box { 
-            margin-top: 15px; 
-            padding: 15px; 
-            border-radius: 8px; 
+            margin-top: 18px; 
+            padding: 18px; 
+            border-radius: 10px; 
             font-size: 14px; 
-            border-left: 5px solid var(--accent-color); 
-            background-color: #fef9e7; 
+            border-left: 6px solid var(--accent-color); 
+            background-color: #fffbeb; 
             color: #7d6608; 
-            line-height: 1.5;
+            line-height: 1.6;
+            box-shadow: 0 4px 10px rgba(241, 196, 15, 0.05);
         }
 
         .roux-icon::before { content: "🥣 "; }
@@ -203,7 +219,7 @@
 <div class="container">
     <div class="header-logo">
         <h1>Robella Bakery</h1>
-        <div class="subtitle">Calcolatore Impasti Artigianali</div>
+        <div class="subtitle">Laboratorio Impasti Artigianali</div>
     </div>
 
     <div class="form-group">
@@ -271,7 +287,7 @@
         }
     };
 
-    // --- MOTORE DI CALCOLO - IMMUTATO ---
+    // --- MOTORE DI CALCOLO ---
 
     const selectProdotto = document.getElementById('prodotto');
     
@@ -302,7 +318,7 @@
         const pesoTarget = parseFloat(document.getElementById('peso-panetto').value) * quantita;
 
         if (isNaN(quantita) || quantita < 1 || isNaN(pesoTarget)) {
-            alert("Inserisci valori validi.");
+            alert("Inserisci valori validi per peso e quantità.");
             return;
         }
 
@@ -338,15 +354,15 @@
             outputHtml += `<div class="extra-box roux-icon"><b>Thangzhong:</b> Prendi ${fRoux}g di farina e ${fRoux*5}g di latte dal TOTALE pesato sopra. Scalda finché non addensa, usa da freddo.</div>`;
         }
         if (ricetta.salamoia) {
+            // AGGIUNTA VOCE SALE GROSSO RICHIESTA
             outputHtml += `<div class="extra-box salamoia-icon" style="background-color:#e1f5fe; border-left-color:#03a9f4; color:#01579b;">
-                <b>Salamoia:</b> Mescola ${ricetta.salamoia.acqua*quantita}ml Acqua, ${ricetta.salamoia.olio*quantita}ml Olio, ${ricetta.salamoia.sale*quantita}g Sale. Qualche chicco di sale grosso.</div>`;
+                <b>Salamoia:</b> Mescola ${ricetta.salamoia.acqua*quantita}ml Acqua, ${ricetta.salamoia.olio*quantita}ml Olio, ${ricetta.salamoia.sale*quantita}g Sale, Qualche chicco di sale grosso.</div>`;
         }
 
         const resDiv = document.getElementById('risultato');
         resDiv.innerHTML = outputHtml;
         resDiv.style.display = 'block';
         
-        // Scroll automatico ai risultati su mobile
         resDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -354,4 +370,3 @@
 </script>
 </body>
 </html>
-
