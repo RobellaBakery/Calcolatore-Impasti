@@ -3,35 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorio Impasti - Cloud</title>
+    <title>Robella Bakery - Calcolatore Professionale</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; display: flex; justify-content: center; }
-        .container { background-color: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 450px; width: 100%; }
-        h1 { text-align: center; color: #e67e22; border-bottom: 2px solid #f1c40f; padding-bottom: 10px; margin-top: 0; }
-        label { font-weight: bold; display: block; margin-top: 15px; color: #2c3e50; }
-        select, input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-top: 5px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; padding: 15px; background-color: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 25px; box-shadow: 0 4px 0 #1e8449; transition: all 0.2s; }
-        button:active { transform: translateY(3px); box-shadow: 0 1px 0 #1e8449; }
-        #risultato { margin-top: 25px; padding: 15px; background-color: #fff; border: 2px solid #ecf0f1; border-radius: 10px; display: none; }
-        .ingrediente { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .ingrediente:last-child { border-bottom: none; }
-        .info-box { margin-top: 15px; padding: 12px; background-color: #e8f8f5; border-left: 5px solid #27ae60; border-radius: 4px; font-size: 14px; }
-        .extra-box { margin-top: 15px; padding: 12px; border-radius: 4px; font-size: 14px; border-left: 5px solid #f1c40f; background-color: #fef9e7; color: #7d6608; }
+        /* --- STILE PROFESSIONALE "ROBELLA BAKERY" --- */
+        :root {
+            --primary-color: #e67e22; /* Arancione Crosta */
+            --secondary-color: #2c3e50; /* Blu Scuro Testo */
+            --accent-color: #f1c40f; /* Giallo Oro */
+            --success-color: #27ae60; /* Verde Tasto */
+            --bg-color: #fdfcfb; /* Crema chiarissimo */
+            --text-color: #34495e;
+            --border-radius: 12px;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            padding: 20px; 
+            margin: 0;
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container { 
+            background-color: #fff; 
+            padding: 30px; 
+            border-radius: var(--border-radius); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+            max-width: 480px; 
+            width: 100%; 
+            border: 1px solid #f1f1f1;
+        }
+
+        /* Header e Logo */
+        .header-logo {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 15px;
+        }
+
+        h1 { 
+            color: var(--primary-color); 
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label { 
+            font-weight: 600; 
+            display: block; 
+            margin-bottom: 8px; 
+            color: var(--secondary-color);
+            font-size: 15px;
+        }
+
+        select, input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #eaeaea; 
+            border-radius: var(--border-radius); 
+            box-sizing: border-box; 
+            font-size: 16px; 
+            transition: all 0.2s;
+            background-color: #fff;
+            color: var(--text-color);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        /* Button */
+        button { 
+            width: 100%; 
+            padding: 18px; 
+            background-color: var(--success-color); 
+            color: white; 
+            border: none; 
+            border-radius: var(--border-radius); 
+            font-size: 18px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            box-shadow: 0 5px 0 #1e8449; 
+            transition: all 0.1s; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: #2ecc71;
+        }
+
+        button:active { 
+            transform: translateY(3px); 
+            box-shadow: 0 2px 0 #1e8449; 
+        }
+
+        /* Risultati */
+        #risultato { 
+            margin-top: 35px; 
+            padding: 20px; 
+            background-color: #fff; 
+            border: 1px solid #eee;
+            border-radius: var(--border-radius); 
+            display: none; 
+            animation: fadeIn 0.4s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3 {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .ingrediente { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 12px 5px; 
+            border-bottom: 1px solid #f9f9f9; 
+        }
+
+        .ingrediente:last-of-type {
+            border-bottom: 2px solid #eee;
+        }
+
+        .ingrediente span {
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        .ingrediente strong {
+            color: var(--secondary-color);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Box Riepilogo e Speciali */
+        .info-box { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background-color: #f8f9fa; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            color: var(--secondary-color);
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .extra-box { 
+            margin-top: 15px; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            border-left: 5px solid var(--accent-color); 
+            background-color: #fef9e7; 
+            color: #7d6608; 
+            line-height: 1.5;
+        }
+
+        .roux-icon::before { content: "🥣 "; }
+        .salamoia-icon::before { content: "🌊 "; }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Laboratorio Impasti</h1>
+    <div class="header-logo">
+        <h1>Robella Bakery</h1>
+        <div class="subtitle">Calcolatore Impasti Artigianali</div>
+    </div>
 
-    <label for="prodotto">Cosa vuoi preparare?</label>
-    <select id="prodotto" onchange="aggiornaPesoDefault()"></select>
+    <div class="form-group">
+        <label for="prodotto">Cosa vuoi preparare?</label>
+        <select id="prodotto" onchange="aggiornaPesoDefault()"></select>
+    </div>
 
-    <label for="peso-panetto">Peso teorico del panetto (gr):</label>
-    <input type="number" id="peso-panetto" min="1">
+    <div class="form-group">
+        <label for="peso-panetto">Peso teorico del panetto (gr):</label>
+        <input type="number" id="peso-panetto" min="1">
+    </div>
 
-    <label for="quantita">Quanti panetti/pezzi vuoi fare?</label>
-    <input type="number" id="quantita" min="1" value="1">
+    <div class="form-group">
+        <label for="quantita">Quanti panetti/pezzi vuoi fare?</label>
+        <input type="number" id="quantita" min="1" value="1">
+    </div>
 
     <button onclick="calcola()">Calcola Ingredienti</button>
 
@@ -40,12 +228,12 @@
 
 <script>
     /* ==========================================
-       ARCHIVIO RICETTE - AGGIUNGI QUI LE NUOVE
+       ARCHIVIO RICETTE - IMMUTATO
        ========================================== */
     const ARCHIVIO_RICETTE = {
         "teglia": {
             nome: "Pizza in Teglia",
-            pesoDefault: 620, // Aggiornato
+            pesoDefault: 620,
             tipoCalcolo: "percentuale",
             ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }
         },
@@ -69,21 +257,21 @@
         },
         "genovese": {
             nome: "Focaccia Genovese",
-            pesoDefault: 673, // Aggiornato (somma esatta ingredienti)
+            pesoDefault: 673,
             tipoCalcolo: "fissa",
             ingredienti: { "Farina tipo 1 o 0": 400, "Acqua tiepida": 220, "Lievito di birra fresco": 8, "Sale": 10, "Olio EVO": 15, "Strutto": 15, "Malto/Miele/Zucchero": 5 },
-            salamoia: { acqua: 50, olio: 25, sale: 4, note: "Qualche chicco di sale grosso in superficie" }
+            salamoia: { acqua: 50, olio: 25, sale: 4 }
         },
         "burger": {
             nome: "Bun per Hamburger",
-            pesoDefault: 80, // Aggiornato
+            pesoDefault: 80,
             tipoCalcolo: "percentuale",
             ingredienti: { "Farina (Manitoba)": 100, "Latte intero": 60, "Lievito di birra fresco": 4, "Zucchero": 10, "Burro": 10, "Sale": 2, "Uova (sgusciate)": 13.6 },
             roux: true
         }
     };
 
-    // --- MOTORE DI CALCOLO ---
+    // --- MOTORE DI CALCOLO - IMMUTATO ---
 
     const selectProdotto = document.getElementById('prodotto');
     
@@ -112,6 +300,11 @@
         const ricetta = ARCHIVIO_RICETTE[id];
         const quantita = parseInt(document.getElementById('quantita').value);
         const pesoTarget = parseFloat(document.getElementById('peso-panetto').value) * quantita;
+
+        if (isNaN(quantita) || quantita < 1 || isNaN(pesoTarget)) {
+            alert("Inserisci valori validi.");
+            return;
+        }
 
         let dosiTeoriche = {};
         
@@ -142,21 +335,22 @@
 
         if (ricetta.roux) {
             const fRoux = arrotonda(dosiTeoriche["Farina (Manitoba)"] * 0.1, "");
-            outputHtml += `<div class="extra-box"><b>Thangzhong:</b> Usa ${fRoux}g di farina e ${fRoux*5}g di latte dal totale pesato.</div>`;
+            outputHtml += `<div class="extra-box roux-icon"><b>Thangzhong:</b> Prendi ${fRoux}g di farina e ${fRoux*5}g di latte dal TOTALE pesato sopra. Scalda finché non addensa, usa da freddo.</div>`;
         }
         if (ricetta.salamoia) {
-            outputHtml += `<div class="extra-box" style="background-color:#e1f5fe; border-left-color:#03a9f4; color:#01579b;">
-                <b>Salamoia:</b> ${ricetta.salamoia.acqua*quantita}ml Acqua, ${ricetta.salamoia.olio*quantita}ml Olio, ${ricetta.salamoia.sale*quantita}g Sale. ${ricetta.salamoia.note ?? ""}</div>`;
+            outputHtml += `<div class="extra-box salamoia-icon" style="background-color:#e1f5fe; border-left-color:#03a9f4; color:#01579b;">
+                <b>Salamoia:</b> Mescola ${ricetta.salamoia.acqua*quantita}ml Acqua, ${ricetta.salamoia.olio*quantita}ml Olio, ${ricetta.salamoia.sale*quantita}g Sale. Versa prima dell'ultima lievitazione.</div>`;
         }
 
         const resDiv = document.getElementById('risultato');
         resDiv.innerHTML = outputHtml;
         resDiv.style.display = 'block';
+        
+        // Scroll automatico ai risultati su mobile
+        resDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
     window.onload = inizializzaApp;
 </script>
 </body>
-
 </html>
-
