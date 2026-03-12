@@ -1,57 +1,287 @@
-const ARCHIVIO_RICETTE = {
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricettario Robella Bakery</title>
+    <style>
+        :root {
+            --primary-color: #e67e22; --secondary-color: #2c3e50; --accent-color: #f1c40f; 
+            --success-color: #27ae60; --bg-color: #fdfaf6; --text-color: #34495e; --border-radius: 20px;
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ctext y='35' x='10' font-size='20' opacity='0.05'%3E🍞%3C/text%3E%3Ctext y='85' x='60' font-size='20' opacity='0.05'%3E🍕%3C/text%3E%3C/svg%3E");
+            padding: 20px; display: flex; justify-content: center; margin: 0; min-height: 100vh;
+        }
+
+        .container { background-color: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: var(--border-radius); box-shadow: 0 20px 50px rgba(0,0,0,0.1); max-width: 500px; width: 100%; border: 1px solid #eee; align-self: flex-start; }
+        
+        .header-logo { text-align: center; margin-bottom: 25px; border-bottom: 4px solid var(--accent-color); padding-bottom: 15px; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 24px; font-weight: 900; text-transform: uppercase; }
+        .subtitle { color: var(--secondary-color); font-size: 14px; font-weight: 600; opacity: 0.9; margin-top: 5px; }
+
+        /* RICERCA */
+        .search-container { position: relative; margin-bottom: 25px; }
+        .search-bar { 
+            width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #edeff2; border-radius: 15px; 
+            font-size: 16px; box-sizing: border-box; transition: 0.3s;
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2395a5a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") no-repeat 15px center;
+        }
+        
+        #search-results { 
+            position: absolute; top: 100%; left: 0; width: 100%; background: white; 
+            border-radius: 0 0 15px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            z-index: 100; display: none; max-height: 250px; overflow-y: auto; border: 1px solid #eee;
+        }
+        .search-item { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f9f9f9; }
+        .search-item img { width: 35px; height: 35px; border-radius: 8px; object-fit: cover; background: #eee; }
+
+        /* TASTI CATEGORIA */
+        .category-container { display: flex; gap: 15px; margin-bottom: 20px; }
+        .btn-category { 
+            flex: 1; padding: 25px 10px; border: 2px solid #edeff2; border-radius: 18px; 
+            background: white; cursor: pointer; transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .btn-category:hover { border-color: var(--primary-color); background-color: #fff9f4; transform: translateY(-3px); }
+
+        /* UI CALCOLATORE */
+        #calculator-ui { display: none; animation: fadeIn 0.5s ease; border-top: 1px solid #eee; margin-top: 20px; padding-top: 20px; }
+        .hero-img { width: 100%; height: 180px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); background: #eee; }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
+        .modal { background: white; padding: 25px; border-radius: var(--border-radius); width: 90%; max-width: 400px; max-height: 75vh; overflow-y: auto; }
+        .recipe-link { padding: 12px; border-bottom: 1px solid #f4f4f4; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s; border-radius: 10px; margin-bottom: 5px; }
+        .recipe-link:hover { background: #fdfaf6; transform: scale(1.02); }
+        .recipe-link img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #f0f0f0; flex-shrink: 0; }
+        .recipe-link span { font-weight: 700; color: var(--secondary-color); }
+
+        /* ELEMENTI RISULTATO */
+        .btn-main { width: 100%; padding: 18px; background-color: var(--success-color); color: white; border: none; border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 25px; box-shadow: 0 5px 0 #1e8449; text-transform: uppercase; }
+        #risultato { margin-top: 30px; display: none; }
+        .card { background: #fff; border: 2px solid #f0f0f0; border-radius: var(--border-radius); padding: 20px; margin-bottom: 20px; }
+        .riga-ingrediente { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f4f4f4; }
+        .procedimento-card { background-color: #f8f9fa; border: 1px solid #eee; border-radius: 15px; padding: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-logo">
+        <h1>Ricettario Robella Bakery</h1>
+        <div class="subtitle">Calcolatore di ingredienti e procedura</div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="mainSearch" class="search-bar" placeholder="Cerca tra le tue delizie..." oninput="searchRecipes()">
+        <div id="search-results"></div>
+    </div>
+
+    <div class="category-container">
+        <div class="btn-category" onclick="openModal('SALATI')">
+            <span>🍕</span>
+            <span>Impasti Salati</span>
+        </div>
+        <div class="btn-category" onclick="openModal('DOLCI')">
+            <span>🥐</span>
+            <span>Impasti Dolci</span>
+        </div>
+    </div>
+
+    <div id="calculator-ui">
+        <img id="recipe-hero" class="hero-img" src="" alt="Anteprima">
+        <div id="selected-recipe-name" style="background: var(--accent-color); color: var(--secondary-color); padding: 8px 15px; border-radius: 30px; display: inline-block; font-weight: 800; font-size: 11px; margin-bottom: 15px;"></div>
+        
+        <label for="peso-panetto">Peso del singolo panetto (gr):</label>
+        <input type="number" id="peso-panetto" style="width: 100%; padding: 15px; border: 2px solid #edeff2; border-radius: 12px; margin-top: 5px;">
+        
+        <label for="quantita">Quante unità vuoi produrre?</label>
+        <input type="number" id="quantita" value="1" style="width: 100%; padding: 15px; border: 2px solid #edeff2; border-radius: 12px; margin-top: 5px;">
+        
+        <button class="btn-main" onclick="calcola()">Calcola Ora</button>
+    </div>
+
+    <div id="risultato"></div>
+</div>
+
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+        <h2 id="modalTitle" style="margin-top:0; font-size:18px; border-bottom:2px solid var(--accent-color); padding-bottom:10px; text-align: center;">Seleziona Ricetta</h2>
+        <div id="recipeList"></div>
+    </div>
+</div>
+
+<script>
+    // Placeholder se la foto manca
+    const IMG_PLACEHOLDER_SALATO = "https://img.icons8.com/emoji/96/bread-emoji.png";
+    const IMG_PLACEHOLDER_DOLCE = "https://img.icons8.com/emoji/96/croissant-emoji.png";
+
+    const ARCHIVIO_RICETTE = {
         "SALATI": {
             "burger": { 
-                nome: "Bun per Hamburger", 
-                foto: "img/burger.jpg", 
-                pesoDefault: 80, 
-                tipo: "percentuale", 
+                nome: "Bun per Hamburger", foto: "", pesoDefault: 80, tipo: "percentuale", 
                 ingredienti: { "Farina (Manitoba)": 100, "Latte intero": 60, "Lievito di birra fresco": 4, "Zucchero": 10, "Burro": 10, "Sale": 2, "Uova (sgusciate)": 13.6 }, 
-                roux: true, 
-                passaggi: [] 
+                roux: true, passaggi: [] 
             },
             "focaccia_barese": { 
-                nome: "Focaccia Barese", 
-                foto: "img/focaccia_barese.jpg", 
-                pesoDefault: 675, 
-                tipo: "fissa", 
+                nome: "Focaccia Barese", foto: "", pesoDefault: 675, tipo: "fissa", 
                 ingredienti: { "Semola": 450, "Farina 0": 150, "Acqua": 400, "Patate bollite": 290, "Olio EVO": 20, "Sale": 18, "Lievito di birra fresco": 12.5 }, 
                 passaggi: [] 
             },
             "focaccia_genovese": { 
-                nome: "Focaccia Genovese", 
-                foto: "img/focaccia_genovese.jpg", 
-                pesoDefault: 673, 
-                tipo: "fissa", 
+                nome: "Focaccia Genovese", foto: "", pesoDefault: 673, tipo: "fissa", 
                 ingredienti: { "Farina tipo 1 o 0": 400, "Acqua tiepida": 220, "Lievito di birra fresco": 8, "Sale": 10, "Olio EVO": 15, "Strutto": 15, "Malto/Miele/Zucchero": 5 }, 
-                salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale": 4, "Sale grosso": "Qualche chicco" }, 
-                passaggi: [] 
+                salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale": 4, "Sale grosso": "Qualche chicco" }, passaggi: [] 
             },
             "pizza_pala": { 
-                nome: "Pizza in Pala", 
-                foto: "img/pizza_pala.jpg", 
-                pesoDefault: 350, 
-                tipo: "percentuale", 
+                nome: "Pizza in Pala", foto: "", pesoDefault: 350, tipo: "percentuale", 
                 ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, 
                 passaggi: [] 
             },
             "pizza_teglia": { 
-                nome: "Pizza in Teglia", 
-                foto: "img/pizza_teglia.jpg", 
-                pesoDefault: 620, 
-                tipo: "percentuale", 
+                nome: "Pizza in Teglia", foto: "", pesoDefault: 620, tipo: "percentuale", 
                 ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, 
                 passaggi: [] 
             },
             "pizza_tonda": { 
-                nome: "Pizza Tonda", 
-                foto: "img/pizza_tonda.jpg", 
-                pesoDefault: 250, 
-                tipo: "percentuale", 
+                nome: "Pizza Tonda", foto: "", pesoDefault: 250, tipo: "percentuale", 
                 ingredienti: { "Farina": 100, "Acqua": 70, "Lievito di birra fresco": 0.5, "Malto diastasico": 0.3, "Sale": 2 }, 
                 passaggi: [] 
             }
         },
-        "DOLCI": {
-            // Qui puoi aggiungere i dolci seguendo lo stesso schema!
-        }
+        "DOLCI": {}
     };
+
+    let categoriaAttiva = "";
+    let ricettaAttivaId = "";
+
+    function getFoto(ricetta, cat) {
+        if (ricetta.foto && ricetta.foto !== "") return ricetta.foto;
+        return (cat === "SALATI") ? IMG_PLACEHOLDER_SALATO : IMG_PLACEHOLDER_DOLCE;
+    }
+
+    function searchRecipes() {
+        const query = document.getElementById('mainSearch').value.toLowerCase();
+        const resultsDiv = document.getElementById('search-results');
+        resultsDiv.innerHTML = "";
+        if (query.length < 1) { resultsDiv.style.display = "none"; return; }
+
+        let trovate = 0;
+        for (let cat in ARCHIVIO_RICETTE) {
+            for (let id in ARCHIVIO_RICETTE[cat]) {
+                const r = ARCHIVIO_RICETTE[cat][id];
+                if (r.nome.toLowerCase().includes(query)) {
+                    let item = document.createElement('div');
+                    item.className = "search-item";
+                    item.innerHTML = `<img src="${getFoto(r, cat)}"> <div><strong>${r.nome}</strong><br><small style="color:#999">${cat}</small></div>`;
+                    item.onclick = () => { categoriaAttiva = cat; selectRecipe(id); document.getElementById('mainSearch').value = ""; resultsDiv.style.display = "none"; };
+                    resultsDiv.appendChild(item);
+                    trovate++;
+                }
+            }
+        }
+        resultsDiv.style.display = trovate > 0 ? "block" : "none";
+    }
+
+    function openModal(cat) {
+        categoriaAttiva = cat;
+        document.getElementById('modalTitle').innerText = (cat === 'SALATI') ? "🍕 Impasti Salati" : "🥐 Impasti Dolci";
+        const listContainer = document.getElementById('recipeList');
+        listContainer.innerHTML = "";
+        const ricette = ARCHIVIO_RICETTE[cat];
+        Object.keys(ricette).sort().forEach(id => {
+            const r = ricette[id];
+            let item = document.createElement('div');
+            item.className = "recipe-link";
+            item.innerHTML = `<img src="${getFoto(r, cat)}"> <span>${r.nome}</span>`;
+            item.onclick = () => selectRecipe(id);
+            listContainer.appendChild(item);
+        });
+        document.getElementById('modalOverlay').style.display = "flex";
+    }
+
+    function closeModal() { document.getElementById('modalOverlay').style.display = "none"; }
+
+    function selectRecipe(id) {
+        ricettaAttivaId = id;
+        const ricetta = ARCHIVIO_RICETTE[categoriaAttiva][id];
+        document.getElementById('recipe-hero').src = getFoto(ricetta, categoriaAttiva);
+        document.getElementById('selected-recipe-name').innerText = "SELEZIONE: " + ricetta.nome.toUpperCase();
+        document.getElementById('peso-panetto').value = ricetta.pesoDefault;
+        document.getElementById('calculator-ui').style.display = "block";
+        document.getElementById('risultato').style.display = "none";
+        closeModal();
+        window.scrollTo({ top: document.getElementById('calculator-ui').offsetTop, behavior: 'smooth' });
+    }
+
+    // (Le funzioni arrotonda e calcola rimangono invariate rispetto alla versione precedente)
+    function arrotonda(val, nome) {
+        if (["Lievito di birra fresco", "Malto diastasico", "Malto/Miele/Zucchero"].includes(nome)) return parseFloat(val.toFixed(2));
+        return (val - Math.floor(val) >= 0.6) ? Math.ceil(val) : Math.floor(val);
+    }
+
+    function calcola() {
+        const ricetta = ARCHIVIO_RICETTE[categoriaAttiva][ricettaAttivaId];
+        const qty = parseInt(document.getElementById('quantita').value);
+        const target = parseFloat(document.getElementById('peso-panetto').value) * qty;
+        if (!target) return alert("Inserisci il peso!");
+
+        let dosi = {};
+        if (ricetta.tipo === "percentuale") {
+            const sum = Object.values(ricetta.ingredienti).reduce((a, b) => a + b, 0);
+            const farinaBase = target / (sum / 100);
+            for (const [ing, p] of Object.entries(ricetta.ingredienti)) dosi[ing] = (farinaBase * p) / 100;
+        } else {
+            const sum = Object.values(ricetta.ingredienti).reduce((a, b) => a + b, 0);
+            const m = target / sum;
+            for (const [ing, q] of Object.entries(ricetta.ingredienti)) dosi[ing] = q * m;
+        }
+
+        let dosiFinali = {};
+        for(let key in dosi) { dosiFinali[key] = arrotonda(dosi[key], key); }
+
+        let html = `<div class="card"><h3>${qty}x ${ricetta.nome}</h3>`;
+        for (const [ing, q] of Object.entries(dosiFinali)) {
+            html += `<div class="riga-ingrediente"><span>${ing}</span><strong>${q} g</strong></div>`;
+        }
+        html += `</div>`;
+
+        if (ricetta.roux) {
+            const fRoux = arrotonda(dosi["Farina (Manitoba)"] * 0.1, "");
+            html += `<div class="extra-card tangzhong" style="background:#fef9e7; padding:15px; border-radius:15px; margin-bottom:15px; border-left:5px solid var(--accent-color)">
+                    <h4 style="margin:0 0 10px 0">🥣 Mung Roux (Tangzhong)</h4>
+                    <div class="riga-ingrediente"><span>Farina (dal totale)</span><strong>${fRoux} g</strong></div>
+                    <div class="riga-ingrediente"><span>Latte (dal totale)</span><strong>${fRoux*5} g</strong></div></div>`;
+        }
+
+        if (ricetta.salamoia) {
+            html += `<div class="extra-card salamoia" style="background:#eef9ff; padding:15px; border-radius:15px; margin-bottom:15px; border-left:5px solid #3498db">
+                    <h4 style="margin:0 0 10px 0">🌊 Salamoia</h4>`;
+            for (const [ing, q] of Object.entries(ricetta.salamoia)) {
+                let v = (typeof q === 'number') ? (q * qty) + " g" : q;
+                html += `<div class="riga-ingrediente"><span>${ing}</span><strong>${v}</strong></div>`;
+            }
+            html += `</div>`;
+        }
+
+        if (ricetta.passaggi && ricetta.passaggi.length > 0) {
+            html += `<div class="procedimento-card"><h4>📝 Il Tuo Procedimento</h4>`;
+            ricetta.passaggi.forEach((step, index) => {
+                let stepDinamico = step.replace(/\{\{(.*?)\}\}/g, (match, p1) => {
+                    return `<span style="color:var(--primary-color); font-weight:bold">${dosiFinali[p1] || p1}g</span>`;
+                });
+                html += `<div style="display:flex; margin-bottom:10px; font-size:14px;"><div style="background:var(--primary-color); color:white; min-width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:10px; font-size:10px;">${index+1}</div>${stepDinamico}</div>`;
+            });
+            html += `</div>`;
+        }
+        const res = document.getElementById('risultato');
+        res.innerHTML = html; res.style.display = 'block';
+        res.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
