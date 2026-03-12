@@ -23,44 +23,35 @@
         h1 { color: var(--primary-color); margin: 0; font-size: 24px; font-weight: 900; text-transform: uppercase; }
         .subtitle { color: var(--secondary-color); font-size: 14px; font-weight: 600; opacity: 0.9; margin-top: 5px; }
 
-        /* RICERCA */
         .search-container { position: relative; margin-bottom: 25px; }
         .search-bar { width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #edeff2; border-radius: 15px; font-size: 16px; box-sizing: border-box; background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2395a5a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") no-repeat 15px center; }
         #search-results { position: absolute; top: 100%; left: 0; width: 100%; background: white; border-radius: 0 0 15px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 100; display: none; max-height: 250px; overflow-y: auto; border: 1px solid #eee; }
         .search-item { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f9f9f9; }
 
-        /* TASTI CATEGORIA */
         .category-container { display: flex; gap: 15px; margin-bottom: 20px; }
         .btn-category { flex: 1; padding: 25px 10px; border: 2px solid #edeff2; border-radius: 18px; background: white; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .btn-category:hover { border-color: var(--primary-color); background-color: #fff9f4; transform: translateY(-3px); }
 
-        /* CALCOLATORE */
         #calculator-ui { display: none; animation: fadeIn 0.5s ease; border-top: 1px solid #eee; margin-top: 20px; padding-top: 20px; }
         .hero-img { width: 100%; height: 200px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; background: #eee; }
         input { width: 100%; padding: 15px; border: 2px solid #edeff2; border-radius: 12px; margin-top: 5px; box-sizing: border-box; font-size: 16px; }
         .btn-main { width: 100%; padding: 18px; background-color: var(--success-color); color: white; border: none; border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 25px; box-shadow: 0 5px 0 #1e8449; text-transform: uppercase; }
 
-        /* RISULTATI */
         .card { background: #fff; border: 2px solid #f0f0f0; border-radius: var(--border-radius); padding: 20px; margin-bottom: 20px; }
         .riga-ingrediente { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f4f4f4; }
         .highlight-box { background: #fff9e6; border-left: 5px solid var(--accent-color); padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 14px; }
         .step-box { background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #eee; line-height: 1.6; }
         .step-title { color: var(--primary-color); font-weight: 800; display: block; margin-bottom: 8px; text-transform: uppercase; font-size: 14px; }
-        .valore-dinamico { color: var(--primary-color); font-weight: 800; border-bottom: 1px dashed var(--primary-color); }
+        .valore-dinamico { color: var(--primary-color); font-weight: 800; }
 
-        /* BOTTONI EXTRA */
         .btn-extra-group { display: flex; gap: 10px; margin-top: 20px; margin-bottom: 40px;}
-        .btn-extra { flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 12px; text-transform: uppercase; box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
+        .btn-extra { flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 12px; text-transform: uppercase; }
         .btn-skills { background: var(--secondary-color); }
         .btn-trouble { background: var(--error-color); }
 
-        /* MODALI */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
         .modal { background: white; padding: 25px; border-radius: var(--border-radius); width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto; position: relative; }
-        .close-x { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; font-weight: bold; color: #ccc; }
-        .modal h2 { color: var(--secondary-color); font-size: 18px; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-top: 0; }
-        .modal h3 { font-size: 15px; color: var(--primary-color); margin-top: 20px; border-left: 4px solid var(--accent-color); padding-left: 10px; }
-        .modal p { font-size: 14px; line-height: 1.5; color: #555; margin-bottom: 15px; }
+        .close-x { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; color: #ccc; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
@@ -74,7 +65,7 @@
     </div>
 
     <div class="search-container">
-        <input type="text" id="mainSearch" class="search-bar" placeholder="Cerca ricetta (es. Pizza, Bun...)" oninput="searchRecipes()">
+        <input type="text" id="mainSearch" class="search-bar" placeholder="Cerca ricetta..." oninput="searchRecipes()">
         <div id="search-results"></div>
     </div>
 
@@ -92,7 +83,7 @@
         <label>Quante unità vuoi produrre?</label>
         <input type="number" id="quantita" value="1">
         
-        <button class="btn-main" onclick="calcola()">Genera Protocollo</button>
+        <button class="btn-main" onclick="calcola()">Genera Procedimento</button>
     </div>
 
     <div id="risultato"></div>
@@ -114,23 +105,23 @@
     const ARCHIVIO_RICETTE = {
         "SALATI": {
             "pizza_teglia": { 
-                nome: "Pizza in Teglia", foto: "img/pizza_teglia.jpg", pesoDefault: 620, tipo: "percentuale", 
+                nome: "Pizza in Teglia", foto: "img/pizza_teglia.jpg", pesoDefault: 624, tipo: "percentuale", 
                 ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 1, "Malto diastasico": 0.5, "Sale": 2.5, "Olio EVO": 3 },
                 autolisi: true,
                 passaggi: [
-                    { t: "1. Autolisi (Passaggio Opzionale ma Consigliato)", d: "Cos'è l'autolisi? È una tecnica preparatoria che consiste nell'idratare la farina solo con una parte dell'acqua, lasciando riposare il composto. Questo processo innesca l'azione degli enzimi e fa sviluppare il glutine in modo spontaneo. Il risultato? Tempi di impastamento dimezzati, maggiore estensibilità e una maglia glutinica più resistente.<br><br>Procedura: Mescola grossolanamente tutta la {{Farina}} con <span class='valore-dinamico'>{{Acqua_Autolisi}}</span> (il 65% dell'acqua totale, rigorosamente fredda di frigo a 3-4°C). Assicurati che non ci siano parti di farina asciutta, ma non impastare. Copri la ciotola e lascia riposare da un minimo di 1 ora a un massimo di 4 ore." },
-                    { t: "2. Impastamento e Strutturazione", d: "Chiusura dell'impasto: Riprendi il pre-impasto autolitico. Aggiungi il {{Lievito di birra fresco}} e il {{Malto diastasico}}. Avvia l'impastatrice a velocità medio-bassa.<br><br>Idratazione e Inserimento Grassi: Quando l'impasto prende corda ed è liscio, aumenta la velocità. Inserisci il {{Sale}} e inizia ad aggiungere il resto dell'acqua (<span class='valore-dinamico'>{{Acqua_Restante}}</span>) a filo, aspettando che la dose precedente sia stata assorbita e l'impasto sia tornato opaco. Infine, aggiungi l'{{Olio EVO}} a filo.<br><br>Attenzione: L'impasto non deve mai superare i 27-28°C." },
-                    { t: "3. Riposo e Pieghe di Rinforzo", d: "Riposo in vasca: Lascia rilassare l'impasto in ciotola per 5 minuti.<br><br>Pieghe: Trasferisci l'impasto sul piano di lavoro inumidito o leggermente oleato. Esegui 3 cicli di pieghe di rinforzo e pirlatura, distanziati da 15-20 minuti l'uno dall'altro." },
-                    { t: "4. Puntata (Prima Lievitazione)", d: "Inserisci l'impasto in un contenitore rettangolare (largo quanto l'impasto e alto il triplo).<br><br>{{Testo_Stagione}}" },
-                    { t: "5. Staglio e Formatura (Seconda Lievitazione)", d: "Il giorno seguente, a raddoppio avvenuto, ribalta l'impasto su semola rimacinata e dividilo in panetti da <span class='valore-dinamico'>{{Peso_Singolo}}g</span>.<br><br>Chiudi ogni panetto portando i lembi esterni verso l'alto e poi al centro, pizzicando la base per sigillarla ('cucitura'). Riponi in contenitori individuali alti e stretti fino al nuovo raddoppio." },
-                    { t: "6. Stesura e Cottura", d: "Preriscaldamento: Accendi il forno alla massima temperatura (modalità statica). Se utilizzi una pietra refrattaria o una piastra in acciaio, posizionala sul fondo o sulla griglia più bassa a forno spento, in modo che si scaldi gradualmente insieme al forno.<br><br>Stesura: Ribalta il panetto su abbondante semola, spolvera anche la superficie e schiaccia delicatamente con i polpastrelli, dall'alto verso il basso (come suonare un pianoforte).<br><br>Rimuovi la semola in eccesso schiaffeggiando l'impasto tra gli avambracci e stendi in teglia fino a coprirne i bordi.<br><br>Cottura: Inforna (appoggiando la teglia direttamente sul fondo del forno o sulla pietra/piastra rovente) per i primi 10-15 minuti. Quando la base è cotta e croccante, sforna, guarnisci con gli ingredienti e rimetti in forno per ultimare la cottura." }
+                    { t: "1. Autolisi (Passaggio Opzionale ma Consigliato)", d: "Cos'è l'autolisi? È una tecnica preparatoria che consiste nell'idratare la farina solo con una parte dell'acqua, lasciando riposare il composto. Procedura: Mescola tutta la {{Farina}} con <span class='valore-dinamico'>{{Acqua_Autolisi}}</span> (65% dell'acqua totale). Lascia riposare da 1 a 4 ore." },
+                    { t: "2. Impastamento e Strutturazione", d: "Chiusura dell'impasto: Riprendi il pre-impasto autolitico. Aggiungi il {{Lievito di birra fresco}} e il {{Malto diastasico}}. Avvia l'impastatrice.<br><br>Aggiungi il {{Sale}} e il resto dell'acqua (<span class='valore-dinamico'>{{Acqua_Restante}}</span>) a filo. Infine, aggiungi l'{{Olio EVO}}." },
+                    { t: "3. Riposo e Pieghe di Rinforzo", d: "Lascia rilassare l'impasto per 5 minuti. Esegui 3 cicli di pieghe di rinforzo ogni 20 minuti." },
+                    { t: "4. Puntata (Prima Lievitazione)", d: "{{Testo_Stagione}}" },
+                    { t: "5. Staglio e Formatura", d: "Il giorno seguente, dividi l'impasto in panetti da <span class='valore-dinamico'>{{Peso_Singolo}}g</span>. Chiudi ogni panetto e riponi fino al raddoppio." },
+                    { t: "6. Stesura e Cottura", d: "Schiaccia delicatamente con i polpastrelli (come suonare un pianoforte). Inforna alla massima temperatura per 10-15 minuti." }
                 ]
             },
-            "burger": { nome: "Bun per Hamburger", foto: "img/burger.jpg", pesoDefault: 80, tipo: "percentuale", ingredienti: { "Farina (Manitoba)": 100, "Latte intero": 60, "Lievito di birra fresco": 4, "Zucchero": 10, "Burro": 10, "Sale": 2, "Uova (sgusciate)": 13.6 }, roux: true, passaggi: [{t:"Impasto", d:"Impasta tutti gli ingredienti..."}] },
-            "focaccia_barese": { nome: "Focaccia Barese", foto: "img/focaccia_barese.jpg", pesoDefault: 675, tipo: "fissa", ingredienti: { "Semola": 450, "Farina 0": 150, "Acqua": 400, "Patate bollite": 290, "Olio EVO": 20, "Sale": 18, "Lievito di birra fresco": 12.5 }, passaggi: [{t:"Impasto", d:"Lavora semola e farina con l'acqua..."}] },
-            "focaccia_genovese": { nome: "Focaccia Genovese", foto: "img/focaccia_genovese.jpg", pesoDefault: 673, tipo: "fissa", ingredienti: { "Farina tipo 1 o 0": 400, "Acqua tiepida": 220, "Lievito di birra fresco": 8, "Sale": 10, "Olio EVO": 15, "Strutto": 15, "Malto/Miele/Zucchero": 5 }, salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale": 4, "Sale grosso": "Qualche chicco" }, passaggi: [{t:"Impasto", d:"Lavora l'impasto fino a renderlo liscio..."}] },
-            "pizza_pala": { nome: "Pizza in Pala", foto: "img/pizza_pala.jpg", pesoDefault: 350, tipo: "percentuale", ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, passaggi: [{t:"Impasto", d:"Alta idratazione, gestisci bene le pieghe..."}] },
-            "pizza_tonda": { nome: "Pizza Tonda", foto: "img/pizza_tonda.jpg", pesoDefault: 250, tipo: "percentuale", ingredienti: { "Farina": 100, "Acqua": 70, "Lievito di birra fresco": 0.5, "Malto diastasico": 0.3, "Sale": 2 }, passaggi: [{t:"Impasto", d:"Impasta e lascia lievitare a lungo..."}] }
+            "burger": { nome: "Bun per Hamburger", foto: "img/burger.jpg", pesoDefault: 80, tipo: "percentuale", ingredienti: { "Farina (Manitoba)": 100, "Latte intero": 60, "Lievito di birra fresco": 4, "Zucchero": 10, "Burro": 10, "Sale": 2, "Uova (sgusciate)": 13.6 }, roux: true, passaggi: [{t:"Impasto", d:"Lavora {{Farina (Manitoba)}} con {{Latte intero}} e {{Lievito di birra fresco}}..."}] },
+            "focaccia_barese": { nome: "Focaccia Barese", foto: "img/focaccia_barese.jpg", pesoDefault: 675, tipo: "fissa", ingredienti: { "Semola": 450, "Farina 0": 150, "Acqua": 400, "Patate bollite": 290, "Olio EVO": 20, "Sale": 18, "Lievito di birra fresco": 12.5 }, passaggi: [{t:"Procedimento", d:"Impasta {{Semola}} e {{Farina 0}} con le {{Patate bollite}}..."}] },
+            "focaccia_genovese": { nome: "Focaccia Genovese", foto: "img/focaccia_genovese.jpg", pesoDefault: 673, tipo: "fissa", ingredienti: { "Farina tipo 1 o 0": 400, "Acqua tiepida": 220, "Lievito di birra fresco": 8, "Sale": 10, "Olio EVO": 15, "Strutto": 15, "Malto/Miele/Zucchero": 5 }, salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale": 4 }, passaggi: [{t:"Procedimento", d:"Lavora {{Farina tipo 1 o 0}} con {{Acqua tiepida}}..."}] },
+            "pizza_pala": { nome: "Pizza in Pala", foto: "img/pizza_pala.jpg", pesoDefault: 350, tipo: "percentuale", ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, passaggi: [{t:"Procedimento", d:"Impasta {{Farina}} con l'80% di {{Acqua}}..."}] },
+            "pizza_tonda": { nome: "Pizza Tonda", foto: "img/pizza_tonda.jpg", pesoDefault: 250, tipo: "percentuale", ingredienti: { "Farina": 100, "Acqua": 70, "Lievito di birra fresco": 0.5, "Malto diastasico": 0.3, "Sale": 2 }, passaggi: [{t:"Procedimento", d:"Impasta {{Farina}} con {{Acqua}} e il {{Lievito di birra fresco}}..."}] }
         },
         "DOLCI": {}
     };
@@ -140,31 +131,28 @@
 
     function searchRecipes() {
         const query = document.getElementById('mainSearch').value.toLowerCase();
-        const resultsDiv = document.getElementById('search-results');
-        resultsDiv.innerHTML = "";
-        if (query.length < 1) { resultsDiv.style.display = "none"; return; }
-        let trovate = 0;
+        const resDiv = document.getElementById('search-results');
+        resDiv.innerHTML = "";
+        if (query.length < 1) { resDiv.style.display = "none"; return; }
         for (let cat in ARCHIVIO_RICETTE) {
             for (let id in ARCHIVIO_RICETTE[cat]) {
                 if (ARCHIVIO_RICETTE[cat][id].nome.toLowerCase().includes(query)) {
                     let item = document.createElement('div');
                     item.className = "search-item";
-                    item.innerHTML = `<strong>${ARCHIVIO_RICETTE[cat][id].nome}</strong> <small style="margin-left:auto; color:#999">${cat}</small>`;
-                    item.onclick = () => { categoriaAttiva = cat; selectRecipe(id); resultsDiv.style.display="none"; document.getElementById('mainSearch').value=""; };
-                    resultsDiv.appendChild(item);
-                    trovate++;
+                    item.innerHTML = `<strong>${ARCHIVIO_RICETTE[cat][id].nome}</strong>`;
+                    item.onclick = () => { categoriaAttiva = cat; selectRecipe(id); resDiv.style.display="none"; document.getElementById('mainSearch').value=""; };
+                    resDiv.appendChild(item);
                 }
             }
         }
-        resultsDiv.style.display = trovate > 0 ? "block" : "none";
+        resDiv.style.display = resDiv.children.length > 0 ? "block" : "none";
     }
 
     function openModal(cat) {
         categoriaAttiva = cat;
-        let html = `<h2>${cat === 'SALATI' ? '🍕 Impasti Salati' : '🥐 Impasti Dolci'}</h2>`;
-        const ricette = ARCHIVIO_RICETTE[cat];
-        for (let id in ricette) {
-            html += `<div style="padding:15px; border-bottom:1px solid #f0f0f0; cursor:pointer; font-weight:bold; display:flex; align-items:center; gap:10px;" onclick="selectRecipe('${id}')"><img src="${ricette[id].foto}" style="width:40px;height:40px;border-radius:5px;object-fit:cover;background:#eee;"> ${ricette[id].nome}</div>`;
+        let html = `<h2>${cat === 'SALATI' ? '🍕 Salati' : '🥐 Dolci'}</h2>`;
+        for (let id in ARCHIVIO_RICETTE[cat]) {
+            html += `<div style="padding:15px; border-bottom:1px solid #f0f0f0; cursor:pointer; font-weight:bold" onclick="selectRecipe('${id}')">${ARCHIVIO_RICETTE[cat][id].nome}</div>`;
         }
         document.getElementById('modalBody').innerHTML = html;
         document.getElementById('modalOverlay').style.display = "flex";
@@ -176,7 +164,7 @@
         ricettaAttivaId = id;
         const r = ARCHIVIO_RICETTE[categoriaAttiva][id];
         document.getElementById('recipe-hero').src = r.foto || "";
-        document.getElementById('selected-recipe-name').innerText = "RICETTA: " + r.nome.toUpperCase();
+        document.getElementById('selected-recipe-name').innerText = r.nome.toUpperCase();
         document.getElementById('peso-panetto').value = r.pesoDefault;
         document.getElementById('calculator-ui').style.display = "block";
         document.getElementById('risultato').style.display = "none";
@@ -190,80 +178,51 @@
         const pesoSingolo = parseFloat(document.getElementById('peso-panetto').value);
         const target = pesoSingolo * qty;
 
-        if (!target) return alert("Inserisci i pesi!");
-
-        let farinaBase = target;
-        if (r.tipo === "percentuale") {
-            const sumPerc = Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
-            farinaBase = target / (sumPerc / 100);
-        } else {
-            const sumFissa = Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
-            farinaBase = (target / sumFissa) * r.ingredienti["Farina" || "Semola" || Object.keys(r.ingredienti)[0]];
-        }
+        const sumPerc = Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
+        const farinaBase = (r.tipo === "percentuale") ? (target / (sumPerc / 100)) : 0;
         
         let dosi = {};
-        for (let [ing, p] of Object.entries(r.ingredienti)) {
-            if (r.tipo === "percentuale") dosi[ing] = Math.round((farinaBase * p) / 100);
-            else {
-                const ratio = target / Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
-                dosi[ing] = Math.round(p * ratio);
-            }
+        if (r.tipo === "percentuale") {
+            for (let [ing, p] of Object.entries(r.ingredienti)) dosi[ing] = Math.round(farinaBase * p / 100);
+        } else {
+            const ratio = target / sumPerc;
+            for (let [ing, q] of Object.entries(r.ingredienti)) dosi[ing] = Math.round(q * ratio);
         }
 
-        // Calcoli speciali Autolisi
-        const acquaTotale = dosi["Acqua"];
+        const acquaTotale = dosi["Acqua"] || 0;
         const acquaAutolisi = Math.round(acquaTotale * 0.65);
         const acquaRestante = acquaTotale - acquaAutolisi;
 
-        // Logica Stagionale
         const mese = new Date().getMonth(); 
         const isEstate = (mese >= 4 && mese <= 9); 
         const testoStagione = isEstate 
-            ? "☀️ **Protocollo Primavera/Estate (Maggio - Ottobre):** Trasferisci immediatamente il contenitore in frigorifero (4°C) per evitare partenze di lievitazione incontrollate per 18-24 ore."
-            : "❄️ **Protocollo Autunno/Inverno (Novembre - Aprile):** Lascia riposare l'impasto a temperatura ambiente per 30 minuti prima di trasferirlo in frigorifero (4°C) per 18-24 ore.";
+            ? "☀️ **Estate:** Trasferisci immediatamente in frigorifero (4°C) per 18-24 ore."
+            : "❄️ **Inverno:** Riposa 30 min a temp. ambiente, poi in frigorifero (4°C) per 18-24 ore.";
 
         let html = `<div class="card"><h3>📦 Ingredienti per ${qty}x ${r.nome}</h3>`;
         for (let [ing, q] of Object.entries(dosi)) {
             html += `<div class="riga-ingrediente"><span>${ing}</span><strong>${q} g</strong></div>`;
         }
-        html += `</div>`;
+        html += `</div><h3>📝 Procedimento</h3>`;
 
-        if (r.autolisi) {
-            html += `<div class="highlight-box"><strong>🧪 Nota Autolisi:</strong> Usa <span class="valore-dinamico">${acquaAutolisi}g</span> d'acqua per la fase iniziale. Ti resteranno <span class="valore-dinamico">${acquaRestante}g</span> per chiudere l'impasto dopo il riposo.</div>`;
-        }
-
-        html += `<h3>📝 Protocollo di Produzione</h3>`;
         r.passaggi.forEach((pobj, i) => {
             let desc = pobj.d.replace("{{Acqua_Autolisi}}", `${acquaAutolisi}g`)
                         .replace("{{Acqua_Restante}}", `${acquaRestante}g`)
                         .replace("{{Testo_Stagione}}", testoStagione)
                         .replace("{{Peso_Singolo}}", `${pesoSingolo}`)
-                        .replace(/\{\{(.*?)\}\}/g, (m, g) => `<span class="valore-dinamico">${dosi[g] || g}g</span>`);
+                        .replace(/\{\{(.*?)\}\}/g, (m, g) => `<strong>${g}</strong> (<span class="valore-dinamico">${dosi[g] || g}g</span>)`);
             
             html += `<div class="step-box"><span class="step-title">${pobj.t}</span>${desc}</div>`;
         });
 
         const resDiv = document.getElementById('risultato');
-        resDiv.innerHTML = html;
-        resDiv.style.display = "block";
+        resDiv.innerHTML = html; resDiv.style.display = "block";
         document.getElementById('extra-buttons').style.display = "flex";
         resDiv.scrollIntoView({ behavior: 'smooth' });
     }
 
     function openInfoModal(tipo) {
-        let content = "";
-        if (tipo === 'skills') {
-            content = `<h2>💡 SKILLS & PRO TIPS</h2>
-            <h3>Controllo Termico (Il limite dei 28°C)</h3><p>Perché l'acqua fredda? L'attrito dell'impastatrice genera calore. Se l'impasto supera i 28°C, la maglia glutinica collassa. L'impasto diventerà lucido, appiccicoso e non tratterrà i gas in cottura. <b>Tip:</b> In estate piena, tieni anche la farina in frigo o usa parte dell'acqua sotto forma di ghiaccio tritato.</p>
-            <h3>Il Segreto del Contenitore</h3><p>La forma del contenitore "guida" il lievito. Se usi una ciotola troppo larga, l'impasto si "spiattellerà". Un contenitore stretto e a pareti dritte (alto almeno il triplo dell'impasto) lo costringerà a spingere verso l'alto, garantendo un'alveolatura pazzesca.</p>
-            <h3>La Stesura "A Pianoforte"</h3><p>Non usare mai il matterello! Schiacciando l'impasto dolcemente con i polpastrelli spingi i gas di lievitazione verso il cornicione, preservando le bolle d'aria che renderanno la tua pizza leggera e digeribile.</p>
-            <h3>Pietra o Acciaio?</h3><p>L'uso di una piastra in acciaio o pietra refrattaria dà una "botta di calore" immediata al fondo della teglia. Simula il forno professionale, garantendo una base scrocchiarella.</p>`;
-        } else {
-            content = `<h2>🆘 RISOLUZIONE DEI PROBLEMI</h2>
-            <h3>Impasto troppo appiccicoso?</h3><p><b>Causa:</b> Acqua inserita troppo velocemente o temperatura oltre i 28°C.<br><b>Soluzione:</b> Ferma tutto. Metti la ciotola in frigo per 15-20 minuti. Riprendi a velocità minima: il freddo aiuterà il glutine a riformarsi.</p>
-            <h3>Fa resistenza e si ritira?</h3><p><b>Causa:</b> Il panetto non è rilassato o è troppo freddo.<br><b>Soluzione:</b> Non forzarlo! Coprilo con la teglia capovolta, aspetta 15-20 minuti e riprova. Si stenderà senza sforzo.</p>
-            <h3>Si attacca al fondo?</h3><p><b>Causa:</b> Poco olio o teglia non adatta.<br><b>Soluzione:</b> Ungi uniformemente. Per il futuro, investi in una "teglia in ferro blu" (trattata con bruciatura), è il materiale d'elezione dei professionisti.</p>`;
-        }
+        let content = tipo === 'skills' ? `<h2>💡 Skills & Pro Tips</h2><h3>Controllo Termico</h3><p>L'attrito scalda l'impasto. Se superi i 28°C il glutine cede.</p><h3>La Stesura</h3><p>Usa i polpastrelli (pianoforte) per non rompere le bolle.</p>` : `<h2>🆘 Help Problemi</h2><h3>Appiccicoso?</h3><p>Metti in frigo 20 min e riprendi a velocità minima.</p><h3>Si ritira?</h3><p>Aspetta 15 min, copri il panetto e riprova.</p>`;
         document.getElementById('modalBody').innerHTML = content;
         document.getElementById('modalOverlay').style.display = "flex";
     }
