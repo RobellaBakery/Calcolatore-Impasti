@@ -4,284 +4,1314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ricettario Robella Bakery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ── RESET & VARIABILI ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         :root {
-            --primary-color: #e67e22; --secondary-color: #2c3e50; --accent-color: #f1c40f; 
-            --success-color: #27ae60; --bg-color: #fdfaf6; --text-color: #34495e; --border-radius: 20px;
+            --cream:   #f9f4ec;
+            --warm:    #f0e6d3;
+            --terra:   #c0622a;
+            --terra2:  #e07840;
+            --brown:   #3b2a1a;
+            --gold:    #d4a853;
+            --green:   #4a7c59;
+            --text:    #3b2a1a;
+            --muted:   #9a8878;
+            --white:   #ffffff;
+            --shadow:  0 4px 24px rgba(59,42,26,.10);
+            --shadow-lg: 0 12px 48px rgba(59,42,26,.16);
+            --r: 16px;
         }
 
-        body { 
-            font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-color); 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ctext y='35' x='10' font-size='20' opacity='0.05'%3E🍞%3C/text%3E%3Ctext y='85' x='60' font-size='20' opacity='0.05'%3E🍕%3C/text%3E%3C/svg%3E");
-            padding: 20px; display: flex; justify-content: center; margin: 0; min-height: 100vh;
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(ellipse at 10% 0%, rgba(192,98,42,.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 90% 100%, rgba(212,168,83,.10) 0%, transparent 55%);
+            min-height: 100vh;
+            padding: 24px 16px 60px;
+            display: flex;
+            justify-content: center;
+            color: var(--text);
         }
 
-        .container { background-color: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: var(--border-radius); box-shadow: 0 20px 50px rgba(0,0,0,0.1); max-width: 500px; width: 100%; border: 1px solid #eee; align-self: flex-start; }
-        
-        .header-logo { text-align: center; margin-bottom: 25px; border-bottom: 4px solid var(--accent-color); padding-bottom: 15px; }
-        h1 { color: var(--primary-color); margin: 0; font-size: 24px; font-weight: 900; text-transform: uppercase; }
-        .subtitle { color: var(--secondary-color); font-size: 14px; font-weight: 600; opacity: 0.9; margin-top: 5px; }
+        .page { width: 100%; max-width: 520px; }
 
-        /* RICERCA */
-        .search-container { position: relative; margin-bottom: 25px; }
-        .search-bar { 
-            width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #edeff2; border-radius: 15px; 
-            font-size: 16px; box-sizing: border-box; transition: 0.3s;
-            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2395a5a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E") no-repeat 15px center;
+        /* ── HEADER ── */
+        header {
+            text-align: center;
+            padding: 36px 24px 32px;
+            background: var(--brown);
+            border-radius: 24px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
         }
-        
-        #search-results { 
-            position: absolute; top: 100%; left: 0; width: 100%; background: white; 
-            border-radius: 0 0 15px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-            z-index: 100; display: none; max-height: 250px; overflow-y: auto; border: 1px solid #eee;
+        header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        .search-item { padding: 10px 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f9f9f9; }
-        .search-item img { width: 35px; height: 35px; border-radius: 8px; object-fit: cover; background: #eee; }
 
-        /* TASTI CATEGORIA */
-        .category-container { display: flex; gap: 15px; margin-bottom: 20px; }
-        .btn-category { 
-            flex: 1; padding: 25px 10px; border: 2px solid #edeff2; border-radius: 18px; 
-            background: white; cursor: pointer; transition: all 0.3s ease;
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
+        /* ── HEADER FOOD STRIP ── */
+        .header-food-strip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
-        .btn-category:hover { border-color: var(--primary-color); background-color: #fff9f4; transform: translateY(-3px); }
+        .header-food-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid rgba(255,255,255,0.18);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+        .header-food-img:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+        }
+        /* center image slightly larger */
+        .header-food-img.main {
+            width: 80px;
+            height: 80px;
+            border-color: var(--gold);
+            border-width: 2.5px;
+        }
+        /* side images smaller */
+        .header-food-img.side {
+            width: 52px;
+            height: 52px;
+            opacity: 0.82;
+        }
 
-        /* UI CALCOLATORE */
-        #calculator-ui { display: none; animation: fadeIn 0.5s ease; border-top: 1px solid #eee; margin-top: 20px; padding-top: 20px; }
-        .hero-img { width: 100%; height: 180px; border-radius: 15px; object-fit: cover; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); background: #eee; }
+        .header-icon { font-size: 48px; display: block; margin-bottom: 12px; }
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white);
+            font-size: clamp(22px, 5vw, 28px);
+            font-weight: 900;
+            letter-spacing: .5px;
+            line-height: 1.2;
+        }
+        header h1 span { color: var(--gold); }
+        .header-sub {
+            margin-top: 8px;
+            color: rgba(255,255,255,.55);
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .header-divider {
+            width: 40px; height: 2px;
+            background: var(--gold);
+            margin: 16px auto 0;
+            border-radius: 2px;
+        }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(4px); }
-        .modal { background: white; padding: 25px; border-radius: var(--border-radius); width: 90%; max-width: 400px; max-height: 75vh; overflow-y: auto; }
-        .recipe-link { padding: 12px; border-bottom: 1px solid #f4f4f4; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.2s; border-radius: 10px; margin-bottom: 5px; }
-        .recipe-link:hover { background: #fdfaf6; transform: scale(1.02); }
-        .recipe-link img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; background: #f0f0f0; flex-shrink: 0; }
-        .recipe-link span { font-weight: 700; color: var(--secondary-color); }
+        /* ── RICERCA ── */
+        .search-wrap { position: relative; margin-bottom: 20px; }
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            border: 2px solid var(--warm);
+            border-radius: var(--r);
+            font-family: inherit;
+            font-size: 15px;
+            background: var(--white);
+            color: var(--text);
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .search-input:focus { border-color: var(--terra); box-shadow: 0 0 0 4px rgba(192,98,42,.10); }
+        .search-icon {
+            position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+            color: var(--muted); pointer-events: none;
+        }
+        #search-results {
+            position: absolute; top: calc(100% + 6px); left: 0; width: 100%;
+            background: var(--white); border-radius: var(--r);
+            box-shadow: var(--shadow-lg); z-index: 200;
+            display: none; overflow: hidden;
+            border: 1px solid var(--warm);
+        }
+        .s-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 18px; cursor: pointer;
+            border-bottom: 1px solid var(--cream);
+            transition: background .15s;
+        }
+        .s-item:last-child { border-bottom: none; }
+        .s-item:hover { background: var(--cream); }
+        .s-item img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; background: var(--warm); }
+        .s-item-name { font-weight: 600; font-size: 14px; }
+        .s-item-cat { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-        /* ELEMENTI RISULTATO */
-        .btn-main { width: 100%; padding: 18px; background-color: var(--success-color); color: white; border: none; border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer; margin-top: 25px; box-shadow: 0 5px 0 #1e8449; text-transform: uppercase; }
-        #risultato { margin-top: 30px; display: none; }
-        .card { background: #fff; border: 2px solid #f0f0f0; border-radius: var(--border-radius); padding: 20px; margin-bottom: 20px; }
-        .riga-ingrediente { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f4f4f4; }
-        .procedimento-card { background-color: #f8f9fa; border: 1px solid #eee; border-radius: 15px; padding: 20px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* ── CATEGORIE ── */
+        .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+        .cat-btn {
+            border: 2px solid var(--warm);
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px 16px;
+            cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            transition: all .25s ease;
+            box-shadow: var(--shadow);
+        }
+        .cat-btn:hover {
+            border-color: var(--terra);
+            background: var(--terra);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .cat-btn:hover .cat-label { color: var(--white); }
+        .cat-btn:hover .cat-emoji { transform: scale(1.15) rotate(-5deg); }
+        .cat-emoji { font-size: 38px; transition: transform .3s ease; display: block; }
+        .cat-label { font-weight: 700; font-size: 13px; color: var(--brown); letter-spacing: .5px; text-transform: uppercase; }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(30,18,8,.65);
+            backdrop-filter: blur(6px);
+            display: none; align-items: center; justify-content: center;
+            z-index: 500; padding: 20px;
+        }
+        .modal {
+            background: var(--white);
+            border-radius: 24px;
+            width: 100%; max-width: 420px;
+            max-height: 80vh; overflow-y: auto;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp .3s ease;
+        }
+        @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--brown);
+            border-bottom: 2px solid var(--warm);
+            padding-bottom: 14px; margin-bottom: 16px;
+        }
+        .modal-close-btn {
+            float: right; background: var(--warm); border: none;
+            border-radius: 50%; width: 32px; height: 32px;
+            cursor: pointer; font-size: 16px; color: var(--brown);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .r-link {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 12px; border-radius: 14px;
+            cursor: pointer; transition: all .2s;
+            border: 1px solid transparent;
+            margin-bottom: 6px;
+        }
+        .r-link:hover { background: var(--cream); border-color: var(--warm); }
+        .r-link img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; background: var(--warm); flex-shrink: 0; }
+        .r-link-name { font-weight: 600; font-size: 15px; color: var(--brown); }
+        .r-link-meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+        /* ── CALCOLATORE ── */
+        #calculator-ui {
+            display: none;
+            animation: fadeIn .4s ease;
+        }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+        .recipe-card {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--warm);
+        }
+        .recipe-hero {
+            width: 100%; height: 200px;
+            object-fit: cover;
+            background: var(--warm);
+            display: block;
+        }
+        .recipe-card-body { padding: 20px 22px; }
+        .recipe-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--terra); color: var(--white);
+            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+            text-transform: uppercase; padding: 5px 12px;
+            border-radius: 30px; margin-bottom: 14px;
+        }
+        .recipe-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px; font-weight: 700;
+            color: var(--brown); margin-bottom: 6px;
+        }
+        .recipe-note {
+            font-size: 13px; color: var(--muted);
+            line-height: 1.6; margin-bottom: 0;
+            padding: 12px 14px;
+            background: var(--cream); border-radius: 10px;
+            border-left: 3px solid var(--gold);
+            margin-top: 10px;
+            display: none;
+        }
+        .recipe-note.visible { display: block; }
+
+        /* Form */
+        .form-group { margin-bottom: 16px; }
+        label.field-label {
+            display: block; font-weight: 600; font-size: 13px;
+            color: var(--muted); text-transform: uppercase; letter-spacing: .8px;
+            margin-bottom: 8px;
+        }
+        .field-input {
+            width: 100%; padding: 14px 18px;
+            border: 2px solid var(--warm); border-radius: var(--r);
+            font-family: inherit; font-size: 16px; color: var(--text);
+            background: var(--white); outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .field-input:focus { border-color: var(--terra); box-shadow: 0 0 0 4px rgba(192,98,42,.10); }
+
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .btn-calc {
+            width: 100%; padding: 18px;
+            background: var(--terra); color: var(--white);
+            border: none; border-radius: var(--r);
+            font-family: inherit; font-size: 16px; font-weight: 700;
+            cursor: pointer; letter-spacing: .5px; text-transform: uppercase;
+            box-shadow: 0 6px 0 #8b3e16;
+            transition: transform .15s, box-shadow .15s;
+            margin-top: 8px;
+        }
+        .btn-calc:active { transform: translateY(3px); box-shadow: 0 3px 0 #8b3e16; }
+        .btn-calc:hover { background: var(--terra2); }
+
+        /* ── RISULTATO ── */
+        #risultato { display: none; animation: fadeIn .4s ease; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px; color: var(--brown);
+            margin-bottom: 14px; font-weight: 700;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .ing-card {
+            background: var(--white); border: 1px solid var(--warm);
+            border-radius: var(--r); overflow: hidden;
+            box-shadow: var(--shadow); margin-bottom: 16px;
+        }
+        .ing-header {
+            background: var(--brown); padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .ing-header h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--white); font-size: 17px;
+        }
+        .ing-qty-badge {
+            background: var(--gold); color: var(--brown);
+            font-size: 12px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .ing-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 11px 20px; border-bottom: 1px solid var(--cream);
+            font-size: 15px;
+        }
+        .ing-row:last-child { border-bottom: none; }
+        .ing-row:nth-child(even) { background: rgba(249,244,236,.5); }
+        .ing-name { color: var(--text); }
+        .ing-val { font-weight: 700; color: var(--terra); font-size: 16px; }
+
+        /* Tangzhong / Salamoia card */
+        .extra-card {
+            border-radius: var(--r); padding: 18px 20px;
+            margin-bottom: 16px; border: 1px solid var(--warm);
+            box-shadow: var(--shadow);
+        }
+        .extra-card.tangzhong { background: #fffbf0; border-left: 4px solid var(--gold); }
+        .extra-card.salamoia { background: #f0f6ff; border-left: 4px solid #5b8dd9; }
+        .extra-card h4 { font-family: 'Playfair Display', serif; font-size: 15px; margin-bottom: 12px; }
+
+        /* Procedimento */
+        .proc-card {
+            background: var(--white); border: 1px solid var(--warm);
+            border-radius: var(--r); padding: 22px;
+            box-shadow: var(--shadow); margin-bottom: 16px;
+        }
+        .step {
+            display: flex; gap: 14px; margin-bottom: 14px;
+            font-size: 14px; line-height: 1.65; color: var(--text);
+        }
+        .step:last-child { margin-bottom: 0; }
+        .step-num {
+            min-width: 28px; height: 28px;
+            background: var(--terra); color: var(--white);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* Azioni risultato */
+        .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+        .btn-action {
+            padding: 14px; border-radius: var(--r); border: 2px solid var(--warm);
+            background: var(--white); font-family: inherit; font-size: 13px;
+            font-weight: 700; cursor: pointer; color: var(--brown);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all .2s;
+        }
+        .btn-action:hover { border-color: var(--terra); color: var(--terra); background: #fff7f3; }
+        .btn-action.primary { background: var(--green); color: var(--white); border-color: var(--green); }
+        .btn-action.primary:hover { background: #3a6447; border-color: #3a6447; color: var(--white); }
+
+        /* ── TEMPI BADGE ── */
+        .tempi-bar {
+            display: flex; gap: 8px; flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .tempo-chip {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; font-weight: 600; padding: 4px 10px;
+            border-radius: 20px; white-space: nowrap;
+        }
+        .tempo-chip.attivo { background: #fff0e6; color: var(--terra); border: 1px solid #f5cdb4; }
+        .tempo-chip.totale { background: #edf7f1; color: var(--green); border: 1px solid #b5ddc4; }
+        .tempo-chip.note   { background: var(--cream); color: var(--muted); border: 1px solid var(--warm); font-weight: 400; font-style: italic; }
+
+        /* modal tempi */
+        .r-link-tempi { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+        .r-link-tempi .tempo-chip { font-size: 10px; padding: 3px 8px; }
+
+        /* ── PRO SKILLS / PROBLEMI ── */
+        .extra-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .btn-extra {
+            padding: 14px 12px; border-radius: var(--r); border: none;
+            font-family: inherit; font-size: 13px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            gap: 7px; transition: all .2s; letter-spacing: .2px;
+        }
+        .btn-extra.pro { background: var(--gold); color: var(--brown); }
+        .btn-extra.pro:hover { background: #c4973d; }
+        .btn-extra.problems { background: var(--terra); color: var(--white); }
+        .btn-extra.problems:hover { background: var(--terra2); }
+
+        .info-modal {
+            background: var(--white); border-radius: 24px;
+            width: 100%; max-width: 460px;
+            max-height: 85vh; overflow-y: auto;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp .3s ease;
+        }
+        .info-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 700; color: var(--brown);
+            border-bottom: 2px solid var(--warm);
+            padding-bottom: 14px; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .skill-item {
+            margin-bottom: 18px;
+            background: var(--cream); border-radius: 14px;
+            padding: 16px 18px;
+            border-left: 4px solid var(--gold);
+        }
+        .skill-item h4 { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 8px; }
+        .skill-item p { font-size: 13px; line-height: 1.7; color: var(--text); }
+        .problem-item {
+            margin-bottom: 18px;
+            background: #fff7f3; border-radius: 14px;
+            padding: 16px 18px;
+            border-left: 4px solid var(--terra);
+        }
+        .problem-item h4 { font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 8px; }
+        .problem-causa { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-style: italic; }
+        .problem-causa strong { color: var(--terra); font-style: normal; }
+        .problem-sol { font-size: 13px; line-height: 1.7; color: var(--text); }
+
+        /* ── PRINT ── */
+        @media print {
+            body { background: white; padding: 0; }
+            header, .search-wrap, .cat-grid, #calculator-ui, .action-row { display: none !important; }
+            #risultato { display: block !important; }
+            .ing-card, .extra-card, .proc-card { box-shadow: none; break-inside: avoid; }
+            .btn-action { display: none; }
+        }
     </style>
 </head>
 <body>
+<div class="page">
 
-<div class="container">
-    <div class="header-logo">
-        <h1>Ricettario Robella Bakery</h1>
-        <div class="subtitle">Calcolatore di ingredienti e procedura</div>
-    </div>
+    <!-- HEADER -->
+    <header>
+        <div class="header-food-strip">
+            <img class="header-food-img side"
+                 src="https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=120&q=80&fit=crop&crop=center"
+                 alt="Panettone"
+                 onerror="this.style.display='none'">
+            <img class="header-food-img"
+                 src="https://images.unsplash.com/photo-1601119479271-21ca92049c81?w=140&q=80&fit=crop&crop=center"
+                 alt="Focaccia"
+                 onerror="this.style.display='none'">
+            <img class="header-food-img main"
+                 src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=180&q=85&fit=crop&crop=center"
+                 alt="Pizza Napoletana"
+                 onerror="this.style.display='none'">
+            <img class="header-food-img"
+                 src="https://images.unsplash.com/photo-1549887534-1541e9326142?w=140&q=80&fit=crop&crop=center"
+                 alt="Cornetti"
+                 onerror="this.style.display='none'">
+            <img class="header-food-img side"
+                 src="https://images.unsplash.com/photo-1608198399988-341aa60ee7a4?w=120&q=80&fit=crop&crop=center"
+                 alt="Brioche"
+                 onerror="this.style.display='none'">
+        </div>
+        <h1>Robella <span>Bakery</span></h1>
+        <p class="header-sub">Calcolatore di impasti</p>
+        <div class="header-divider"></div>
+    </header>
 
-    <div class="search-container">
-        <input type="text" id="mainSearch" class="search-bar" placeholder="Cerca tra le tue delizie..." oninput="searchRecipes()">
+    <!-- RICERCA -->
+    <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" id="mainSearch" placeholder="Cerca una ricetta..." oninput="searchRecipes()" autocomplete="off">
         <div id="search-results"></div>
     </div>
 
-    <div class="category-container">
-        <div class="btn-category" onclick="openModal('SALATI')">
-            <span>🍕</span>
-            <span>Impasti Salati</span>
-        </div>
-        <div class="btn-category" onclick="openModal('DOLCI')">
-            <span>🥐</span>
-            <span>Impasti Dolci</span>
-        </div>
+    <!-- CATEGORIE -->
+    <div class="cat-grid">
+        <button class="cat-btn" onclick="openModal('SALATI')">
+            <span class="cat-emoji">🍕</span>
+            <span class="cat-label">Impasti Salati</span>
+        </button>
+        <button class="cat-btn" onclick="openModal('DOLCI')">
+            <span class="cat-emoji">🥐</span>
+            <span class="cat-label">Impasti Dolci</span>
+        </button>
     </div>
 
+    <!-- CALCOLATORE -->
     <div id="calculator-ui">
-        <img id="recipe-hero" class="hero-img" src="" alt="Anteprima">
-        <div id="selected-recipe-name" style="background: var(--accent-color); color: var(--secondary-color); padding: 8px 15px; border-radius: 30px; display: inline-block; font-weight: 800; font-size: 11px; margin-bottom: 15px;"></div>
-        
-        <label for="peso-panetto">Peso del singolo panetto (gr):</label>
-        <input type="number" id="peso-panetto" style="width: 100%; padding: 15px; border: 2px solid #edeff2; border-radius: 12px; margin-top: 5px;">
-        
-        <label for="quantita">Quante unità vuoi produrre?</label>
-        <input type="number" id="quantita" value="1" style="width: 100%; padding: 15px; border: 2px solid #edeff2; border-radius: 12px; margin-top: 5px;">
-        
-        <button class="btn-main" onclick="calcola()">Calcola Ora</button>
+        <div class="recipe-card">
+            <img id="recipe-hero" class="recipe-hero" src="" alt="" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&fit=crop'">
+            <div class="recipe-card-body">
+                <div class="recipe-badge" id="recipe-badge">🍞 Selezione</div>
+                <div class="recipe-title" id="recipe-title">—</div>
+                <div class="tempi-bar" id="recipe-tempi" style="display:none"></div>
+                <div class="recipe-note" id="recipe-note"></div>
+            </div>
+        </div>
+
+        <div class="input-row">
+            <div class="form-group">
+                <label class="field-label" for="peso-panetto">Peso panetto (gr)</label>
+                <input type="number" class="field-input" id="peso-panetto" placeholder="es. 250">
+            </div>
+            <div class="form-group">
+                <label class="field-label" for="quantita">Unità da produrre</label>
+                <input type="number" class="field-input" id="quantita" value="1" min="1">
+            </div>
+        </div>
+
+        <button class="btn-calc" onclick="calcola()">⚖️ &nbsp;Calcola gli ingredienti</button>
     </div>
 
+    <!-- RISULTATO -->
     <div id="risultato"></div>
+
 </div>
 
+<!-- MODAL -->
 <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
     <div class="modal" onclick="event.stopPropagation()">
-        <h2 id="modalTitle" style="margin-top:0; font-size:18px; border-bottom:2px solid var(--accent-color); padding-bottom:10px; text-align: center;">Seleziona Ricetta</h2>
+        <div class="modal-title">
+            <button class="modal-close-btn" onclick="closeModal()">✕</button>
+            <span id="modalTitle">Seleziona Ricetta</span>
+        </div>
         <div id="recipeList"></div>
     </div>
 </div>
 
+<!-- MODAL PRO SKILLS -->
+<div id="proModal" class="modal-overlay" onclick="closeInfoModal('proModal')">
+    <div class="info-modal" onclick="event.stopPropagation()">
+        <div class="info-modal-title">
+            <span>💡 Pro Skills</span>
+            <button class="modal-close-btn" onclick="closeInfoModal('proModal')">✕</button>
+        </div>
+        <div id="proModalBody"></div>
+    </div>
+</div>
+
+<!-- MODAL RISOLUZIONE PROBLEMI -->
+<div id="problemModal" class="modal-overlay" onclick="closeInfoModal('problemModal')">
+    <div class="info-modal" onclick="event.stopPropagation()">
+        <div class="info-modal-title">
+            <span>🔧 Risoluzione Problemi</span>
+            <button class="modal-close-btn" onclick="closeInfoModal('problemModal')">✕</button>
+        </div>
+        <div id="problemModalBody"></div>
+    </div>
+</div>
+
 <script>
-    // Placeholder se la foto manca
-    const IMG_PLACEHOLDER_SALATO = "https://img.icons8.com/emoji/96/bread-emoji.png";
-    const IMG_PLACEHOLDER_DOLCE = "https://img.icons8.com/emoji/96/croissant-emoji.png";
+// ── DATI RICETTE ─────────────────────────────────────────────────────────────
+const IMG = {
+    salato: "https://img.icons8.com/emoji/96/bread-emoji.png",
+    dolce:  "https://img.icons8.com/emoji/96/croissant-emoji.png"
+};
 
-    const ARCHIVIO_RICETTE = {
-        "SALATI": {
-            "burger": { 
-                nome: "Bun per Hamburger", foto: "", pesoDefault: 80, tipo: "percentuale", 
-                ingredienti: { "Farina (Manitoba)": 100, "Latte intero": 60, "Lievito di birra fresco": 4, "Zucchero": 10, "Burro": 10, "Sale": 2, "Uova (sgusciate)": 13.6 }, 
-                roux: true, passaggi: [] 
+const RICETTE = {
+    SALATI: {
+        burger: {
+            nome: "Bun per Hamburger",
+            foto: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80",
+            pesoDefault: 80,
+            tipo: "percentuale",
+            tempi: { attivo: "30 min", totale: "12–14 ore", note: "Di cui 8–12h in frigo" },
+            nota: "Impasto morbido con tecnica Tangzhong (roux) per una mollica più soffice e duratura. Ideale per panini da hamburger gourmet.",
+            ingredienti: {
+                "Farina Manitoba": 100,
+                "Latte intero": 60,
+                "Lievito di birra fresco": 4,
+                "Zucchero": 10,
+                "Burro": 10,
+                "Sale": 2,
+                "Uova (sgusciate)": 13.6
             },
-            "focaccia_barese": { 
-                nome: "Focaccia Barese", foto: "", pesoDefault: 675, tipo: "fissa", 
-                ingredienti: { "Semola": 450, "Farina 0": 150, "Acqua": 400, "Patate bollite": 290, "Olio EVO": 20, "Sale": 18, "Lievito di birra fresco": 12.5 }, 
-                passaggi: [] 
-            },
-            "focaccia_genovese": { 
-                nome: "Focaccia Genovese", foto: "", pesoDefault: 673, tipo: "fissa", 
-                ingredienti: { "Farina tipo 1 o 0": 400, "Acqua tiepida": 220, "Lievito di birra fresco": 8, "Sale": 10, "Olio EVO": 15, "Strutto": 15, "Malto/Miele/Zucchero": 5 }, 
-                salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale": 4, "Sale grosso": "Qualche chicco" }, passaggi: [] 
-            },
-            "pizza_pala": { 
-                nome: "Pizza in Pala", foto: "", pesoDefault: 350, tipo: "percentuale", 
-                ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, 
-                passaggi: [] 
-            },
-            "pizza_teglia": { 
-                nome: "Pizza in Teglia", foto: "", pesoDefault: 620, tipo: "percentuale", 
-                ingredienti: { "Farina": 100, "Acqua": 80, "Lievito di birra fresco": 0.65, "Malto diastasico": 0.3, "Sale": 2.6, "Olio EVO": 2.5 }, 
-                passaggi: [] 
-            },
-            "pizza_tonda": { 
-                nome: "Pizza Tonda", foto: "", pesoDefault: 250, tipo: "percentuale", 
-                ingredienti: { "Farina": 100, "Acqua": 70, "Lievito di birra fresco": 0.5, "Malto diastasico": 0.3, "Sale": 2 }, 
-                passaggi: [] 
-            }
+            roux: true,
+            passaggi: [
+                "<strong>Prepara il Tangzhong (Mung Roux):</strong> Le quantità esatte le trovi nel riquadro arancione qui sopra. Versa la farina indicata in un pentolino e aggiungi il latte indicato a filo, mescolando con una frusta per sciogliere eventuali grumi. Porta sul fuoco medio-basso mescolando continuamente: vedrai il composto addensarsi lentamente. Fermati quando raggiunge i <strong>65°C</strong> (o quando la crema è densa e lascia il segno della spatola sul fondo). Trasferisci in una ciotola, copri con pellicola a contatto e lascia raffreddare completamente — anche in frigo per velocizzare.",
+                "<strong>Primo impasto in planetaria:</strong> Nella ciotola della planetaria con il gancio, versa {{Farina Manitoba}} g di farina Manitoba. Aggiungi il Tangzhong freddo, {{Latte intero}} g di latte tiepido (28-30°C) e sbriciolaci direttamente dentro {{Lievito di birra fresco}} g di lievito fresco. Aggiungi {{Zucchero}} g di zucchero. Avvia a velocità minima (1) per <strong>2-3 minuti</strong> fino a che tutti gli ingredienti si sono amalgamati e non vedi più farina asciutta sul fondo.",
+                "<strong>Aggiungi uova e sale:</strong> Con la planetaria ancora in moto a velocità bassa, aggiungi {{Uova (sgusciate)}} g di uova sbattute (circa 2 uova medie) un po' alla volta, aspettando che ogni aggiunta venga assorbita. Poi aggiungi {{Sale}} g di sale. Aumenta la velocità a media (3-4) e impasta per <strong>8 minuti</strong>. L'impasto deve iniziare a staccarsi dalle pareti e diventare liscio.",
+                "<strong>Aggiungi il burro (fase critica):</strong> Taglia {{Burro}} g di burro a temperatura ambiente in cubetti piccoli. Con la planetaria a velocità media, aggiungili <em>uno alla volta</em>, aspettando che ogni cubetto venga completamente assorbito prima di aggiungere il successivo. Ci vorranno circa <strong>10-12 minuti</strong>. Non avere fretta: il burro aggiunto troppo in fretta rende l'impasto unto e lucido. L'impasto finale deve essere morbido, setoso, elastico e staccarsi dalle pareti pulito.",
+                "<strong>Verifica incordatura (test del velo):</strong> Prendi un pezzetto di impasto e tiralo delicatamente tra le dita: deve estendersi fino a formare un velo semitrasparente senza strapparsi. Se si strappa subito, impasta ancora 3-4 minuti. Se il test riesce, l'impasto è pronto.",
+                "<strong>Prima lievitazione:</strong> Forma una palla liscia con l'impasto, mettila in una ciotola leggermente unta di burro. Copri con pellicola alimentare aderente (non con un canovaccio: potrebbe formare una crosta). Lascia a temperatura ambiente per <strong>60 minuti</strong>, poi trasferisci in frigorifero per <strong>8-12 ore</strong> (anche tutta la notte). La lenta lievitazione in frigo sviluppa sapore e rende l'impasto molto più facile da lavorare.",
+                "<strong>Staglio e formatura:</strong> Il giorno seguente, estrai l'impasto dal frigo e lascialo acclimatare <strong>20 minuti</strong>. Rovescialo su un piano leggermente infarinato. Dividilo in porzioni uguali dal peso desiderato con un tarocco. Per ogni panetto: piega i bordi verso il centro, capovolgi e ruota sul piano con il palmo (movimento circolare) fino a ottenere una pallina tesa e liscia.",
+                "<strong>Seconda lievitazione:</strong> Disponi i panetti su una teglia con carta forno, ben distanziati (raddoppieranno!). Copri con pellicola unta o un canovaccio umido. Lascia lievitare in un posto tiepido (28°C ideali, anche con il forno spento e la luce accesa) per <strong>60-90 minuti</strong>. Sono pronti quando premendo delicatamente con un dito l'impronta torna su lentamente.",
+                "<strong>Lucidatura e cottura:</strong> Preriscalda il forno a <strong>180°C ventilato</strong>. Sbatti un uovo con un cucchiaio di latte e spennella delicatamente la superficie di ogni panetto (non premere, non sgonfiare). Volendo, cospargi con semi di sesamo. Cuoci per <strong>14-16 minuti</strong> fino a doratura uniforme. Sforna e lascia raffreddare su una griglia: non tagliarli caldi o la mollica si appiattirà."
+            ],
+            proSkills: [
+                { titolo: "🌡️ La Temperatura del Latte è Tutto", testo: "Il lievito di birra muore sopra i 38°C. Il range ideale è 28-30°C: il latte deve sembrare tiepido al polso, quasi indistinguibile dalla temperatura della pelle." },
+                { titolo: "🧈 Il Burro deve essere Pomata", testo: "Il burro deve essere morbidissimo, quasi a crema (tecnicamente 'en pomade'): se lasci il dito premuto, entra senza sforzo. Se è freddo o fuso cambia tutto: freddo non si incorpora, fuso 'rompe' l'emulsione dell'impasto. Tiralo fuori dal frigo almeno 1 ora prima." },
+                { titolo: "🧪 Il Tangzhong: perché funziona", testo: "Portando una parte di farina a 65°C con il latte, l'amido gelatinizza e assorbe molta più acqua del normale. Questo 'serbatoio' di umidità si libera lentamente in cottura, rendendo il panino morbidissimo per giorni anche senza conservanti." },
+                { titolo: "❄️ Lievitazione in Frigo: il tuo alleato", testo: "La lievitazione lenta a freddo (8-12h) non serve solo a organizzarsi i tempi: attiva gli enzimi proteolitici che 'digeriscono' parte del glutine, rendendo il panino più leggero, digeribile e profumato di una versione 'veloce'." }
+            ],
+            problemi: [
+                { titolo: "🧈 Il burro non si assorbe e l'impasto è unto e scivoloso", causa: "Il burro era troppo caldo (quasi fuso) oppure è stato aggiunto tutto in una volta. Questo rompe la struttura del glutine.", soluzione: "Ferma la planetaria e metti la ciotola in freezer per 10 minuti. Riprendi a velocità minima: il freddo 'ricompatta' l'impasto. In futuro, aggiungi il burro un cubetto alla volta, aspettando sempre l'assorbimento completo." },
+                { titolo: "📦 I panetti si appiattiscono durante la seconda lievitazione", causa: "L'impasto non è abbastanza incordato, oppure è stato aggiunto troppo lievito o la temperatura ambiente è eccessiva.", soluzione: "Prima di aggiungere il burro, assicurati sempre di fare il test del velo. Per la seconda lievitazione, 28°C sono il massimo: oltre questa temperatura il glutine si rilassa troppo e non regge la forma." },
+                { titolo: "🍞 Il panino è buono ma si indurisce il giorno dopo", causa: "Cottura troppo lunga o temperatura eccessiva che ha evaporato troppa umidità.", soluzione: "Sforna non appena la superficie è dorata (non scura). Conserva in sacchetti di plastica a temperatura ambiente, non in frigo (il freddo retrogreda l'amido e li indurisce). Si possono congelare perfettamente una volta raffreddati." }
+            ]
         },
-        "DOLCI": {}
-    };
+        focaccia_barese: {
+            nome: "Focaccia Barese",
+            foto: "https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?w=600&q=80&fit=crop",
+            pesoDefault: 670,
+            pesoBase: 1340,
+            tipo: "fissa",
+            tempi: { attivo: "30 min", totale: "3–4 ore", note: "Lievitazione a temperatura ambiente" },
+            nota: "Ricetta tipica pugliese con l'aggiunta di patate bollite nell'impasto, che garantisce una consistenza interna morbida e umida.",
+            ingredienti: {
+                "Semola rimacinata": 450,
+                "Farina 0": 150,
+                "Acqua": 400,
+                "Patate (sbucciate e schiacciate)": 270,
+                "Olio EVO": 20,
+                "Sale": 18,
+                "Lievito di birra fresco": 12
+            },
+            passaggi: [
+                "<strong>Lessate le patate:</strong> Pesa e lessa {{Patate (sbucciate e schiacciate)}} g di patate sbucciate in acqua salata fino a che risultano morbidissime (prova con uno stecchino: deve entrare senza resistenza). Scolale e schiacciale ancora calde con uno schiaccipatate. Stendile su un vassoio e lasciale raffreddare completamente — le patate calde attiverebbero troppo il lievito e rovinerebbero l'impasto.",
+                "<strong>Metti tutto in planetaria:</strong> Nella ciotola della planetaria con il gancio, versa {{Semola rimacinata}} g di semola rimacinata e {{Farina 0}} g di farina 0. Aggiungi le patate schiacciate fredde e {{Olio EVO}} g di olio EVO. Sbriciolaci dentro {{Lievito di birra fresco}} g di lievito fresco. Avvia a velocità minima e comincia ad aggiungere {{Acqua}} g di acqua tiepida (28-30°C) poco alla volta.",
+                "<strong>Aggiungi il sale e incorda:</strong> Dopo circa <strong>5 minuti</strong> di lavorazione, quando l'impasto è già formato, aggiungi {{Sale}} g di sale (mai a contatto diretto con il lievito all'inizio). Aumenta la velocità a medio-bassa e impasta per altri <strong>8-10 minuti</strong>. L'impasto sarà morbido e leggermente appiccicoso — è normale per via delle patate. Non aggiungere farina extra.",
+                "<strong>Prima lievitazione:</strong> Forma una palla, mettila in una ciotola unta d'olio e coprila con pellicola. Lascia lievitare in un luogo tiepido (forno spento con la luce accesa, circa 26-28°C) per <strong>1,5-2 ore</strong>, fino al raddoppio del volume.",
+                "<strong>Stesura in teglia:</strong> Versa abbondante olio EVO sul fondo di una teglia rotonda (ø 32-36 cm) o rettangolare. Rovescia l'impasto lievitato nella teglia e comincia a stenderlo con le mani unte di olio. Se resiste e si ritira, copri con un canovaccio e aspetta <strong>10 minuti</strong>: il glutine si rilasserà da solo. Stendi fino ai bordi della teglia.",
+                "<strong>Seconda lievitazione e condimento:</strong> Copri la teglia e lascia riposare ancora <strong>30 minuti</strong>. Nel frattempo, taglia i pomodorini a metà. Preriscalda il forno a <strong>220-230°C statico</strong> (o 200°C ventilato) con la griglia sul ripiano più basso. Premi i pomodorini nell'impasto con il taglio verso l'alto, aggiungi le olive denocciolate, origano, sale grosso e irrora generosamente con olio EVO.",
+                "<strong>Cottura:</strong> Inforna sul ripiano basso e cuoci per <strong>25-35 minuti</strong>. La focaccia è pronta quando il bordo e il fondo sono ben dorati e croccanti. Solleva un angolo con una spatola per controllare: il fondo deve essere ambrato. Sforna e lascia riposare <strong>5 minuti</strong> prima di tagliare."
+            ],
+            proSkills: [
+                { titolo: "🥔 Le Patate: la Chiave della Morbidezza", testo: "Le patate nell'impasto non sono solo tradizione: l'amido delle patate assorbe e trattiene l'umidità molto più a lungo del glutine. Risultato: una focaccia che rimane morbida dentro anche il giorno dopo. Usa patate farinose (es. Russet o pasta bianca) e schiacciale ancora calde per evitare grumi." },
+                { titolo: "🫙 Semola + Farina 0: il Connubio Perfetto", testo: "La semola di grano duro regala alla focaccia barese il suo sapore caratteristico e la croccantezza del fondo. La farina 0 porta il glutine necessario per dare struttura. Non sostituire la semola con farina normale: il risultato sarebbe una focaccia completamente diversa." },
+                { titolo: "🛢️ Olio: non lesinare", testo: "La generosità con l'olio EVO non è un capriccio: è tecnica. L'olio sul fondo della teglia crea una frittura leggera dalla parte inferiore che forma la caratteristica base croccante della focaccia barese. Sii generoso: almeno 3-4 cucchiai sul fondo della teglia." },
+                { titolo: "🌡️ Il Forno deve essere Davvero Caldo", testo: "220-230°C non è esagerato. La focaccia barese vuole un calore deciso per cuocersi velocemente e sviluppare croccantezza senza diventare secca. Se il tuo forno ha il piano in ghisa o una pietra refrattaria, usala: darà una botta di calore dal basso perfetta." }
+            ],
+            problemi: [
+                { titolo: "🥔 L'impasto è troppo appiccicoso e non si lavora", causa: "Le patate erano ancora calde quando le hai aggiunte (hanno ammorbidito troppo l'impasto) oppure erano molto acquose.", soluzione: "Non aggiungere farina extra: rovineresti la consistenza finale. Ungi abbondantemente le mani e il piano di lavoro con olio. Se l'impasto è davvero impossibile, mettilo in frigo 20 minuti: si compatterà e sarà più facile da gestire." },
+                { titolo: "🍕 La focaccia è morbida ma il fondo non è croccante", causa: "Poco olio sul fondo della teglia, o teglia posizionata troppo in alto nel forno.", soluzione: "Cuoci sempre sul ripiano più basso. Durante la cottura, puoi anche spostare la teglia direttamente sul fondo del forno (se è elettrico) negli ultimi 5 minuti per croccantezza extra." },
+                { titolo: "😔 La focaccia è densa e poco alveolata", causa: "Lievitazione incompleta o lievito non abbastanza attivo.", soluzione: "Non avere fretta nella lievitazione: il raddoppio del volume è il segnale, non il tempo. Se la cucina è fredda, metti la ciotola nel forno spento con un pentolino di acqua calda sul fondo (crea umidità e calore)." }
+            ]
+        },
+        focaccia_genovese: {
+            nome: "Focaccia Genovese",
+            foto: "https://images.unsplash.com/photo-1601119479271-21ca92049c81?w=600&q=80&fit=crop",
+            pesoDefault: 673,
+            tipo: "fissa",
+            tempi: { attivo: "40 min", totale: "3–4 ore", note: "Doppia lievitazione + salamoia" },
+            nota: "La vera focaccia ligure ha la salamoia: questa soluzione di acqua, olio e sale versata sulla superficie prima della cottura crea la caratteristica crosticina lucida e saporita.",
+            ingredienti: {
+                "Farina tipo 1 o 0": 400,
+                "Acqua tiepida": 220,
+                "Lievito di birra fresco": 8,
+                "Sale": 10,
+                "Olio EVO": 15,
+                "Strutto": 15,
+                "Malto/Miele/Zucchero": 5
+            },
+            salamoia: { "Acqua": 50, "Olio EVO": 25, "Sale fino": 4, "Sale grosso": "Qualche chicco" },
+            passaggi: [
+                "<strong>Mescola farine e grassi in planetaria:</strong> Nella ciotola della planetaria con il gancio, versa {{Farina tipo 1 o 0}} g di farina. Aggiungi {{Sale}} g di sale, {{Olio EVO}} g di olio EVO, {{Strutto}} g di strutto a temperatura ambiente e {{Malto/Miele/Zucchero}} g di malto. Sbriciolaci direttamente dentro {{Lievito di birra fresco}} g di lievito fresco. Avvia a velocità minima per 1 minuto: la farina deve assorbire i grassi prima di incontrare i liquidi.",
+                "<strong>Unisci l'acqua e impasta:</strong> Con la planetaria in moto a velocità bassa, versa {{Acqua tiepida}} g di acqua tiepida (28-30°C) a filo. Aumenta a velocità medio-bassa e impasta per <strong>10-12 minuti</strong>. L'impasto è pronto quando è liscio, morbido ed elastico — si stacca dalle pareti della ciotola pulito.",
+                "<strong>Prima lievitazione:</strong> Forma una palla, mettila in una ciotola unta con un filo d'olio. Copri con pellicola alimentare. Lascia lievitare in un posto caldo e senza correnti d'aria per <strong>60-90 minuti</strong>, fino al raddoppio. In inverno puoi mettere la ciotola nel forno spento con la sola luce accesa.",
+                "<strong>Stesura in teglia:</strong> Ungi abbondantemente la teglia (30×40 cm) con olio EVO. Rovescia l'impasto al centro e allargalo delicatamente con le mani unte. Se resiste, coprilo e lascialo riposare <strong>10 minuti</strong>: il glutine si rilasserà e si stenderà facilmente.",
+                "<strong>Riposo in teglia:</strong> Copri la teglia con un canovaccio e lascia riposare <strong>15-20 minuti</strong>. Questo riposo consente all'impasto di rilassarsi completamente prima della fossettatura.",
+                "<strong>Le fossette (il gesto iconico):</strong> Con i polpastrelli delle dita (non le unghie), premi deciso sull'impasto creando fossette profonde e uniformi su tutta la superficie. Le fossette raccoglieranno la salamoia e creeranno il contrasto croccante/morbido tipico della focaccia genovese.",
+                "<strong>Prepara e versa la salamoia:</strong> Le dosi sono nel riquadro blu qui sopra. In una tazza, emulsiona acqua, olio EVO e sale fino sbattendo con una forchetta. Versala uniformemente sulla focaccia, assicurandoti che ogni fossetta sia bagnata. Cospargi con qualche chicco di sale grosso.",
+                "<strong>Seconda lievitazione:</strong> Lascia riposare la focaccia coperta per altri <strong>40-50 minuti</strong> a temperatura ambiente. Nel frattempo preriscalda il forno alla temperatura massima (<strong>230-250°C statico</strong>). La focaccia è pronta da infornare quando i bordi iniziano ad apparire gonfi e la superficie è lucida.",
+                "<strong>Cottura:</strong> Inforna sul ripiano centrale (o basso) per <strong>15-20 minuti</strong>. È pronta quando la superficie è dorata e le fossette sono ambrate. Il fondo deve essere croccante: solleva un angolo con una spatola per controllare. Sforna e consuma tiepida entro 30 minuti."
+            ],
+            proSkills: [
+                { titolo: "🐷 Lo Strutto: perché usarlo", testo: "Lo strutto nella focaccia genovese non è sostituibile con l'olio: contribuisce a una consistenza interna più morbida e a una crosta più friabile. Se non lo usi per motivi dietetici, sostituiscilo con pari quantità di olio EVO, ma il risultato sarà leggermente diverso." },
+                { titolo: "🌊 La Salamoia: l'elemento segreto", testo: "La salamoia (acqua + olio + sale) è ciò che distingue la focaccia genovese da tutte le altre. Va emulsionata bene (olio e acqua non si mescolano spontaneamente) e versata generosamente. Durante la cottura l'acqua evapora lasciando l'olio che frigge leggermente la superficie, creando la crosticina lucida." },
+                { titolo: "🌡️ Il Forno al Massimo", testo: "Non avere paura della temperatura alta: la focaccia genovese vuole calore intenso per cuocersi velocemente. Un forno a 200°C la asciugherebbe prima di cuocerla bene. 230-250°C sono il range corretto per avere superficie dorata e interno morbido." },
+                { titolo: "⏰ Mangiala Subito", testo: "La focaccia genovese è sublime calda o tiepida, nei primi 20-30 minuti. Dopo inizia a perdere croccantezza. Se avanza, riscaldala in forno caldo per 3-4 minuti: torna quasi come appena sfornata." }
+            ],
+            problemi: [
+                { titolo: "😕 La focaccia è pallida e morbida, non dorata", causa: "Forno non abbastanza caldo o posizione troppo alta nel forno.", soluzione: "La focaccia genovese richiede il massimo della temperatura. Preriscalda il forno per almeno 20 minuti. Posiziona la teglia sul ripiano basso o centrale, mai in alto. Se il tuo forno ha il grill, attivalo negli ultimi 2-3 minuti per dorare la superficie." },
+                { titolo: "🏜️ La focaccia è secca dentro", causa: "Cottura troppo lunga o temperatura troppo bassa (ha cotto troppo lentamente evaporando tutta l'umidità).", soluzione: "Riduci il tempo di cottura e aumenta la temperatura. La focaccia genovese cuoce velocemente: controlla già a 12 minuti. Assicurati anche di aver versato abbastanza salamoia prima di infornare." },
+                { titolo: "🕳️ Le fossette scompaiono durante la lievitazione", causa: "Il secondo riposo è durato troppo o la temperatura ambiente era molto alta. L'impasto ha lievitato riempiendo le fossette.", soluzione: "È un problema estetico, non di gusto. In futuro, fai le fossette più profonde (quasi fino al fondo della teglia) e accorcia il secondo riposo a 30 minuti se la cucina è calda." }
+            ]
+        },
+        pizza_pala: {
+            nome: "Pizza in Pala",
+            foto: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=600&q=80",
+            pesoDefault: 350,
+            tipo: "percentuale",
+            tempi: { attivo: "45 min", totale: "30–52 ore", note: "Di cui 24–48h di maturazione in frigo" },
+            nota: "Alta idratazione (80%) per una pizza leggera, ariosa e ben alveolata. Richiede farine forti (W300+) e maturazione lunga in frigo.",
+            ingredienti: {
+                "Farina (W300+)": 100,
+                "Acqua": 80,
+                "Lievito di birra fresco": 0.65,
+                "Malto diastasico": 0.3,
+                "Sale": 2.6,
+                "Olio EVO": 2.5
+            },
+            passaggi: [
+                "<strong>Scelta della farina (fondamentale):</strong> Per la pizza in pala con 80% di idratazione è indispensabile una farina forte con W300 o superiore (Caputo Nuvola, Garofalo W330, Lo Conte Pizza...). Una farina debole (W200 o meno, come molte farine '00' da supermercato) non regge tanta acqua e l'impasto collasserà. Controlla sempre il valore W sull'etichetta.",
+                "<strong>Autolisi:</strong> Versa {{Acqua}} g di acqua fredda di frigo (3-4°C) in una ciotola grande. Scioglie dentro {{Lievito di birra fresco}} g di lievito sbriciolato e {{Malto diastasico}} g di malto diastasico. Mescola bene. Aggiungi {{Farina (W300+)}} g di farina tutta in una volta e mescola solo fino a che non rimane farina asciutta — <em>non impastare</em>. Copri con pellicola e lascia riposare <strong>30-60 minuti</strong>. Questo riposo (autolisi) permette al glutine di svilupparsi spontaneamente e renderà l'impasto molto più facile da lavorare.",
+                "<strong>Strutturazione dell'impasto:</strong> Riprendi il pre-impasto. Aggiungi {{Sale}} g di sale e avvia l'impastatrice con il gancio a velocità medio-bassa. Quando il sale è assorbito, inizia ad aggiungere {{Olio EVO}} g di olio a filo. Impasta per <strong>8-10 minuti</strong> a velocità media. L'impasto è pronto quando si stacca dalle pareti e appare liscio e setoso. <em>⚠️ Non superare mai i 27°C: usa un termometro da cucina.</em>",
+                "<strong>Pieghe in ciotola:</strong> Lascia riposare l'impasto in ciotola coperta per <strong>15 minuti</strong>. Poi esegui la prima serie di pieghe: bagna le mani, afferra il bordo dell'impasto, tiralo verso l'alto e piegalo al centro. Ruota la ciotola di 90° e ripeti per 4 lati. Questo è 1 ciclo. Fai <strong>3-4 cicli</strong> ogni 20-30 minuti. Le pieghe rinforzano la maglia glutinica senza scaldare l'impasto.",
+                "<strong>Puntata in frigo (maturazione):</strong> Dopo l'ultimo ciclo di pieghe, metti l'impasto in un contenitore rettangolare con coperchio ermetico, leggermente unto. Trasferisci in frigo a 4°C per <strong>24-48 ore</strong>. Più a lungo matura (fino a 72h con pochissimo lievito), più sarà digeribile e saporito. Nota: con {{Lievito di birra fresco}} g la maturazione ideale è 24-36h.",
+                "<strong>Staglio e appretto:</strong> Estrai il contenitore dal frigo. L'impasto deve essere raddoppiato. Rovescialo delicatamente su un piano cosparso di semola rimacinata (non di farina: la semola non si assorbe e facilita la manipolazione). Taglia i panetti con un tarocco — mai strapparli. Chiudi ogni panetto portando i lembi verso il centro e capovolgi. Metti in contenitori singoli coperti e lascia a temperatura ambiente per <strong>3-4 ore</strong> fino al raddoppio.",
+                "<strong>Preriscaldamento forno:</strong> Posiziona la pietra refrattaria o la piastra d'acciaio sul ripiano più basso. Accendi il forno alla massima temperatura (<strong>280-300°C ventilato</strong> o grill+ventilato) e lascia riscaldare per almeno <strong>45-60 minuti</strong>. La pietra deve essere rovente: è il segreto di una base croccante.",
+                "<strong>Stesura:</strong> Cospargi di semola rimacinata una pala da pizza (o il retro di una teglia piatta). Rovescia il panetto sulla semola. Con i polpastrelli, schiaccia delicatamente dall'alto verso il basso in forma allungata, spingendo i gas verso i bordi. Usa i pugni chiusi sotto l'impasto per allargarlo ulteriormente. I bordi (cornicione) non devono mai essere toccati. Il disco deve essere sottile al centro.",
+                "<strong>Condimento e cottura:</strong> Condisci velocemente con pomodoro San Marzano schiacciato a mano, sale, olio. Fai scivolare la pizza sulla pietra rovente con un movimento deciso. Cuoci per <strong>5-7 minuti</strong>. A metà cottura (circa 3 minuti), estrai e aggiungi la mozzarella ben strizzata. Rimetti in forno fino a che i bordi sono gonfi e scuri. Finisci con basilico fresco e un filo d'olio EVO."
+            ],
+            proSkills: [
+                { titolo: "❄️ L'Acqua Fredda: il Motivo", testo: "Con 80% di idratazione e l'attrito dell'impastatrice, l'impasto rischia facilmente di scaldarsi troppo. Partendo con acqua a 3-4°C si guadagnano gradi preziosi. In estate: usa ghiaccio tritato per metà dell'acqua. Il target è avere l'impasto a 24-26°C a fine lavorazione." },
+                { titolo: "🔬 Il Malto Diastasico: non è decorativo", testo: "Il malto diastasico contiene enzimi (amilasi) che scompongono gli amidi della farina in zuccheri semplici. Questi zuccheri nutrono il lievito durante la lunga maturazione in frigo e — soprattutto — bruciano in cottura creando la caratteristica colorazione scura e saporita del cornicione." },
+                { titolo: "📐 La Forma della Pala", testo: "La pizza in pala è tipicamente rettangolare o ovale allungata, non tonda. Questa forma non è casuale: permette una cottura più uniforme in un forno domestico standard e facilita il trasferimento sulla pietra. Punta a circa 30-35 cm di lunghezza per panetto da 350g." },
+                { titolo: "🧲 La Semola: non la Farina", testo: "La semola rimacinata non si assorbe nell'impasto come fa la farina, quindi 'lubrifica' senza cambiare la consistenza. Usarla abbondantemente sul piano e sulla pala è il segreto per trasferire la pizza in forno senza che si attacchi o si strappi." }
+            ],
+            problemi: [
+                { titolo: "💧 L'impasto è liquidissimo e impossibile da lavorare", causa: "La farina usata è troppo debole (W basso) per reggere l'80% di idratazione, oppure non è stata fatta l'autolisi.", soluzione: "Non si può recuperare facilmente. Per il futuro: usa sempre farina W300+. Fai sempre l'autolisi. Aggiungi l'acqua gradualment: non tutta in una volta." },
+                { titolo: "😱 La pizza si strappa quando la stendo", causa: "Il panetto non è abbastanza rilassato (ha bisogno di più tempo di appretto) o è troppo freddo.", soluzione: "Copri il panetto e aspetta ancora 30-60 minuti a temperatura ambiente. Se stai lavorando direttamente dal frigo, il glutine è troppo contratto: deve acclimatarsi completamente prima di essere steso." },
+                { titolo: "🏠 Il fondo è crudo e la superficie è già dorata", causa: "La pietra non era abbastanza calda, o la pizza è stata messa troppo in alto nel forno.", soluzione: "La pietra o piastra d'acciaio devono scaldarsi almeno 45-60 minuti prima di infornare. Posizionale sempre sul ripiano più basso. Se il fondo rimane crudo, trasferisci direttamente sul fondo del forno (se elettrico) per 1-2 minuti." }
+            ]
+        },
+        pizza_teglia: {
+            nome: "Pizza in Teglia",
+            foto: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80",
+            pesoDefault: 620,
+            tipo: "percentuale",
+            tempi: { attivo: "50 min", totale: "26–30 ore", note: "Di cui 18–24h di maturazione in frigo" },
+            nota: "Metodo diretto con autolisi opzionale ma consigliata. Alta idratazione (80%) per una pizza leggera, alveolata e croccante sotto. Il peso indicato è per una teglia 30×40 cm standard.",
+            ingredienti: {
+                "Farina (W280+)": 100,
+                "Acqua": 80,
+                "Lievito di birra fresco": 0.65,
+                "Malto diastasico": 0.3,
+                "Sale": 2.6,
+                "Olio EVO": 2.5
+            },
+            passaggi: [
+                "<strong>Autolisi (consigliata):</strong> Mescola grossolanamente tutta la farina con il <strong>65% dell'acqua totale</strong> (fredda di frigo, 3-4°C). Non impastare: assicurati solo che non ci siano parti di farina asciutta. Copri la ciotola e lascia riposare da <strong>1 a 4 ore</strong>.",
+                "<strong>Chiusura dell'impasto:</strong> Riprendi il pre-impasto autolitico. Aggiungi il lievito e il malto diastasico. Avvia l'impastatrice a velocità medio-bassa. Quando l'impasto è liscio e incordato, aumenta la velocità.",
+                "<strong>Idratazione progressiva:</strong> Inserisci il sale, poi aggiungi il resto dell'acqua a filo, aspettando che ogni dose sia assorbita prima di aggiungere la successiva. Infine inserisci l'olio a filo. <em>⚠️ L'impasto non deve mai superare i 27-28°C.</em>",
+                "<strong>Riposo in vasca:</strong> Lascia rilassare l'impasto in ciotola per <strong>5 minuti</strong>.",
+                "<strong>Pieghe di rinforzo:</strong> Trasferisci l'impasto sul piano inumidito. Esegui <strong>3 cicli di pieghe</strong> distanziati da 15-20 minuti l'uno dall'altro.",
+                "<strong>Puntata (1ª lievitazione):</strong> Metti l'impasto in un contenitore stretto e alto (alto almeno il triplo dell'impasto). Lascia riposare a temperatura ambiente per <strong>30 minuti</strong>, poi trasferisci in frigo a 4°C per <strong>18-24 ore</strong>.",
+                "<strong>Staglio:</strong> Il giorno seguente, a raddoppio avvenuto, ribalta l'impasto su semola rimacinata e dividi nelle pezzature corrette. Chiudi ogni panetto portando i lembi verso il centro, pizzicando la base per sigillarla.",
+                "<strong>2ª lievitazione:</strong> Riponi i panetti in contenitori individuali alti e stretti. Aspetta il nuovo raddoppio a temperatura ambiente.",
+                "<strong>Preriscaldamento forno:</strong> Porta il forno alla massima temperatura in modalità statica. Se hai una pietra refrattaria o piastra in acciaio, mettila sul ripiano più basso a forno freddo e scaldala insieme al forno.",
+                "<strong>Stesura:</strong> Ribalta il panetto su abbondante semola. Schiaccia delicatamente con i polpastrelli dall'alto verso il basso (come suonare un pianoforte) spingendo i gas verso il cornicione. Rimuovi la semola in eccesso schiaffeggiando l'impasto tra gli avambracci, poi stendi nella teglia ben oliata fino ai bordi.",
+                "<strong>Cottura:</strong> Inforna appoggiando la teglia direttamente sul fondo del forno o sulla pietra rovente. Cuoci per i primi <strong>10-15 minuti</strong> fino a che la base è croccante. Sforna, guarnisci con gli ingredienti e rimetti in forno per ultimare la cottura."
+            ],
+            proSkills: [
+                { titolo: "🌡️ Controllo Termico — il limite dei 28°C", testo: "L'attrito dell'impastatrice genera calore. Se l'impasto supera i 28°C la maglia glutinica collassa: l'impasto diventa lucido, appiccicoso e non tratterrà i gas in cottura. <strong>Tip:</strong> in estate usa acqua ghiacciata o tieni la farina in frigo. Controlla sempre con un termometro da cucina." },
+                { titolo: "📦 Il Segreto del Contenitore", testo: "La forma del contenitore 'guida' il lievito. Una ciotola troppo larga fa 'spiatellare' l'impasto ai lati. Un contenitore stretto a pareti dritte (alto almeno il triplo dell'impasto) lo costringe a spingere verso l'alto, garantendo un'alveolatura spettacolare." },
+                { titolo: "🎹 La Stesura 'a Pianoforte'", testo: "Non usare mai il mattarello! Schiacciando l'impasto con i polpastrelli spingi i gas di lievitazione verso il cornicione, preservando le bolle d'aria che renderanno la pizza leggera e digeribile." },
+                { titolo: "🪨 Pietra o Acciaio?", testo: "Una piastra in acciaio o pietra refrattaria dà una botta di calore immediata al fondo della teglia, simulando il suolo di un forno professionale. Risultato: base scrocchiarella e perfettamente cotta anche a casa." }
+            ],
+            problemi: [
+                { titolo: "😰 L'impasto è appiccicoso e non prende corda", causa: "Hai aggiunto l'acqua troppo velocemente, oppure la temperatura dell'impasto ha superato i 28°C facendo cedere il glutine.", soluzione: "Ferma l'impastatrice. Metti la ciotola con l'impasto in frigo per 15-20 minuti. Riprendi a impastare a velocità minima: il freddo aiuta la maglia glutinica a riformarsi." },
+                { titolo: "↩️ L'impasto resiste e si ritira durante la stesura", causa: "Il panetto non è ancora rilassato a sufficienza, o è troppo freddo. Il glutine è ancora troppo tenace.", soluzione: "Non forzarlo, rischi di strapparlo e perdere i gas. Coprilo con la teglia capovolta, aspetta 15-20 minuti e riprova: si stenderà molto più facilmente." },
+                { titolo: "🍕 La pizza si attacca al fondo della teglia", causa: "Poco olio sulla teglia, o teglie non adatte alle alte temperature.", soluzione: "Ungi uniformemente la teglia prima di stendere. Per risultati professionali usa una teglia in ferro blu: una volta 'bruciata' diventa naturalmente antiaderente e trasmette il calore in modo perfetto." }
+            ]
+        },
+        pizza_tonda: {
+            nome: "Pizza Tonda Napoletana",
+            foto: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80&fit=crop",
+            pesoDefault: 250,
+            tipo: "percentuale",
+            tempi: { attivo: "45 min", totale: "30–54 ore", note: "Di cui 24–48h in frigo + 4–6h appretto" },
+            nota: "Impasto classico napoletano a bassa idratazione (70%). Il segreto è nella lunga maturazione e nella cottura ad alte temperature con pietra refrattaria.",
+            ingredienti: {
+                "Farina (W260-280)": 100,
+                "Acqua": 70,
+                "Lievito di birra fresco": 0.5,
+                "Malto diastasico": 0.3,
+                "Sale": 2
+            },
+            passaggi: [
+                "<strong>Prepara i liquidi:</strong> Versa {{Acqua}} g di acqua fredda (max 18°C) nella ciotola della planetaria. Sciogli {{Sale}} g di sale nell'acqua mescolando. Sbriciolaci dentro {{Lievito di birra fresco}} g di lievito fresco e aggiungi {{Malto diastasico}} g di malto. Mescola fino a completo scioglimento.",
+                "<strong>Incorpora la farina (metodo napoletano):</strong> Aggiungi {{Farina (W260-280)}} g di farina poco alla volta nell'acqua — non al contrario. Questo metodo garantisce una distribuzione più omogenea dell'idratazione. Monta il gancio sulla planetaria e avvia a velocità minima (1) finché tutta la farina è assorbita.",
+                "<strong>Impastamento in planetaria:</strong> Aumenta la velocità a medio-bassa (2-3) e impasta per <strong>12-15 minuti</strong>. L'impasto è pronto quando è liscio come velluto, non appiccicoso, e si stacca dalle pareti della ciotola: tendendolo non si strappa ma si allunga. <em>⚠️ Non superare i 24°C: usa acqua fredda e, se necessario, metti la ciotola in frigo 10 minuti a metà lavorazione.</em>",
+                "<strong>Puntata (prima lievitazione):</strong> Forma una palla ben tesa. Mettila in un contenitore leggermente unto, copri con pellicola aderente. Lascia riposare a temperatura ambiente per <strong>30 minuti</strong>, poi trasferisci in frigo a 4°C per <strong>24-48 ore</strong>. Con {{Lievito di birra fresco}} g di lievito sono perfette 36 ore. Più lungo è il riposo, più la pizza sarà digeribile e profumata.",
+                "<strong>Staglio (formatura dei panetti):</strong> Estrai l'impasto dal frigo. Sarà freddo e compatto: è normale. Rovescialo su un piano infarinato con semola. Taglia in porzioni uguali con un tarocco (non strappare mai). Per ogni porzione: appiattisci leggermente, porta i bordi verso il centro pizzicando, capovolgi e ruota sul piano con il palmo formando una palla tesa. La cucitura deve stare sotto.",
+                "<strong>Appretto (seconda lievitazione):</strong> Disponi i panetti ben distanziati in un contenitore largo e basso coperto ermeticamente con pellicola. Lascia a temperatura ambiente per <strong>4-6 ore</strong>. I panetti devono almeno raddoppiare e apparire morbidi e gonfi. Premendo delicatamente con un dito l'impronta deve tornare lentamente su.",
+                "<strong>Preriscaldamento forno al massimo:</strong> Accendi il forno alla temperatura massima (<strong>300-320°C se possibile</strong>, altrimenti 280°C) con la pietra refrattaria o la piastra d'acciaio sul ripiano più basso. Lascia riscaldare per almeno <strong>60 minuti</strong>: la pietra deve essere completamente satura di calore.",
+                "<strong>Stesura (mai il mattarello!):</strong> Cospargi il piano di lavoro con abbondante semola rimacinata. Rovescia il panetto sulla semola. Con i polpastrelli, parti dal centro e spingi verso l'esterno ruotando il disco di 45° dopo ogni serie di pressioni. Lascia sempre un cornicione di 2 cm intatto sui bordi. Per allargare, posiziona i pugni sotto il disco e allargali verso l'esterno. Il disco finito deve avere circa 28-30 cm e spessore uniforme al centro.",
+                "<strong>Condimento rapido e cottura:</strong> Lavora velocemente: l'impasto non deve seccarsi. Stendi 2-3 cucchiai di pomodoro San Marzano schiacciato, un filo d'olio EVO, un pizzico di sale. Fai scivolare la pizza sulla pietra rovente con una pala. Cuoci per <strong>5-8 minuti</strong>. Negli ultimi 2 minuti aggiungi la mozzarella fior di latte ben strizzata. Sforna quando il cornicione è gonfio con macchie scure (il 'leopardato') e la mozzarella è appena sciolta. Finisci con basilico fresco."
+            ],
+            proSkills: [
+                { titolo: "🐆 Il Leopardato: segno di qualità", testo: "Le macchie brune/scure sul cornicione non sono bruciature: si chiamano 'leopardatura' e sono il segno di una pizza napoletana ben fatta. Si formano dove le bolle d'aria a contatto con il calore altissimo bruciano leggermente lo zucchero dell'impasto, creando un sapore complesso e affumicato." },
+                { titolo: "⏱️ L'appretto: la fase più delicata", testo: "Un panetto sotto-lievitato (poco tempo di appretto) sarà difficile da stendere e duro dopo la cottura. Uno sovra-lievitato (troppo tempo o troppo caldo) avrà perso forza, sarà appiccicoso e si strapperà. Il test del dito è fondamentale: l'impronta deve tornare lentamente — né subito (sotto) né restare ferma (sovra)." },
+                { titolo: "🍅 Il Pomodoro giusto", testo: "Per la margherita napoletana usa San Marzano DOP in scatola. Scolalo dall'eccesso di liquido e schiaccialo a mano con un po' di sale. Non cuocerlo prima: va messo crudo sulla pizza. Evita passate di pomodoro già condite o troppo acquose." },
+                { titolo: "💧 Mozzarella: strizzarla è fondamentale", testo: "La mozzarella fior di latte ha molta acqua. Senza strizzarla bene, rilascerà umidità in cottura rendendo la pizza molle. Tagliala a fette, mettila in un colino per 30 minuti prima di usarla. In alternativa, aggiungila all'ultimo minuto di cottura: così non ha tempo di rilasciare acqua." }
+            ],
+            problemi: [
+                { titolo: "📏 La pizza si ritira e non raggiunge il diametro corretto", causa: "Il glutine è ancora troppo tenace. Il panetto non ha avuto abbastanza tempo di appretto o è ancora freddo.", soluzione: "Copri il panetto e aspetta ancora 30-60 minuti. Se senti che l'impasto 'tira' mentre lo stendi, non insistere: lascialo riposare coperto 10 minuti e riprova. La pazienza qui è la tecnica." },
+                { titolo: "🕳️ Si forma un buco al centro durante la stesura", causa: "Il disco è stato assottigliato troppo nel mezzo, o c'era un punto debole nell'impasto (bolla d'aria troppo grande).", soluzione: "Lavora sempre dal centro verso l'esterno, mai al contrario. Se si forma un buco piccolo, puoi 'rattopparlo' sovrapponendo un lembo di impasto e schiacciando bene. Se il buco è grande, reimpasta e lascia riposare 15 minuti." },
+                { titolo: "🍕 La pizza è gommosa dopo la cottura", causa: "Impasto sotto-lievitato o cottura troppo breve a temperatura troppo bassa.", soluzione: "La pizza napoletana richiede temperature altissime (280°C+) e tempi brevi. A temperature più basse l'impasto cuoce lentamente perdendo umidità e diventando gommoso invece che leggero. Usa sempre la pietra refrattaria o la piastra d'acciaio e scaldale a lungo." }
+            ]
+        }
+    },
+    DOLCI: {
+        brioche_siciliana: {
+            nome: "Brioche Siciliana col Tuppo",
+            foto: "https://images.unsplash.com/photo-1608198399988-341aa60ee7a4?w=600&q=80&fit=crop",
+            pesoDefault: 120,
+            tipo: "percentuale",
+            tempi: { attivo: "45 min", totale: "13–15 ore", note: "Di cui 10–12h in frigo" },
+            nota: "Soffice, profumata, con la pallina in cima — il tuppo. La versione da forno professionale, impasto arricchito con uova, burro, arancia e vaniglia. Perfetta con granita o gelato.",
+            ingredienti: {
+                "Farina Manitoba": 80,
+                "Farina 00": 20,
+                "Latte intero": 38,
+                "Uova (sgusciate)": 20,
+                "Zucchero semolato": 18,
+                "Burro": 18,
+                "Lievito di birra fresco": 3,
+                "Sale": 1.5,
+                "Miele d'acacia": 2,
+                "Estratto di vaniglia": 0.5
+            },
+            passaggi: [
+                "<strong>Primo impasto in planetaria:</strong> Nella ciotola della planetaria col gancio, unisci {{Farina Manitoba}} g di Manitoba e {{Farina 00}} g di farina 00. Aggiungi {{Latte intero}} g di latte tiepido (28-30°C), {{Miele d'acacia}} g di miele, {{Estratto di vaniglia}} g di estratto di vaniglia e sbriciolaci dentro {{Lievito di birra fresco}} g di lievito fresco. Avvia a velocità minima (1) per 2 minuti fino ad amalgamare.",
+                "<strong>Aggiungi uova, zucchero e sale:</strong> Con la planetaria a velocità bassa, aggiungi {{Zucchero semolato}} g di zucchero e poi {{Uova (sgusciate)}} g di uova sbattute poco alla volta, aspettando sempre l'assorbimento. Aggiungi {{Sale}} g di sale. Aumenta a velocità media (3) e impasta per <strong>8 minuti</strong> fino a che l'impasto è liscio e si stacca dalle pareti.",
+                "<strong>Inserimento burro — fase critica:</strong> Taglia {{Burro}} g di burro morbido (20°C, consistenza pomata) in cubetti piccoli. Con la planetaria a velocità media, aggiungili <em>uno alla volta</em> aspettando ogni volta l'assorbimento completo prima del cubetto successivo. Ci vorranno <strong>10-12 minuti</strong>. L'impasto finale deve essere setoso, elastico e non appiccicoso. <strong>Test del velo:</strong> tira un pezzetto di impasto tra le dita — deve formare una membrana sottile e semitrasparente senza strapparsi.",
+                "<strong>Prima lievitazione + frigo:</strong> Forma una palla liscia, mettila in una ciotola unta d'olio. Copri con pellicola aderente e lascia a temperatura ambiente per <strong>60 minuti</strong>. Poi trasferisci in frigo a 4°C per <strong>10-12 ore</strong> (tutta la notte). La lunga lievitazione fredda sviluppa il profumo e la struttura caratteristica della brioche siciliana.",
+                "<strong>Staglio e formatura col tuppo:</strong> Estrai dal frigo e lascia acclimatare <strong>20 minuti</strong>. Per ogni brioche pesa due pezzi: uno da circa il 85% del peso totale (la base) e uno da circa il 15% (il tuppo). Arrotonda entrambi sul piano. Posiziona la base su carta forno. Con un dito infarinato fai un foro al centro della base, inserisci il tuppo e premi deciso: deve essere incastrato, non solo appoggiato.",
+                "<strong>Seconda lievitazione:</strong> Disponi le brioche distanziate su teglia. Copri con pellicola leggermente unta. Lascia lievitare a <strong>26-28°C per 90-120 minuti</strong>, fino al raddoppio visibile. In forno spento con luce accesa è l'ambiente ideale.",
+                "<strong>Lucidatura e cottura:</strong> Preriscalda il forno a <strong>175°C ventilato</strong>. Spennella delicatamente ogni brioche con un mix di 1 tuorlo + 2 cucchiai di latte (non premere, non sgonfiare). Cuoci per <strong>14-16 minuti</strong> fino a doratura uniforme e profonda. Sforna e raffredda su griglia almeno 15 minuti prima di servire."
+            ],
+            proSkills: [
+                { titolo: "🍊 L'Aroma Siciliano Autentico", testo: "Aggiungi la scorza grattugiata di 1 arancia non trattata e qualche goccia di acqua di fiori d'arancio insieme alla vaniglia. Questi tre aromi insieme danno alla brioche siciliana il suo profumo inconfondibile che nessun aroma sintetico riesce a replicare." },
+                { titolo: "🧈 Burro Pomata: temperatura esatta", testo: "Il burro deve essere a 18-20°C: morbidissimo ma non fuso. Se il tuo indice entra senza sforzo premendo, è pronto. Se è freddo non si incorpora; se è fuso rompe l'emulsione. Tiralo dal frigo almeno 60-90 minuti prima. In estate, lavora in cucina climatizzata." },
+                { titolo: "🫧 Il Tuppo Non Deve Cadere", testo: "Il foro nella base deve essere abbastanza profondo da 'incastrare' il tuppo. Se durante la lievitazione il tuppo tende a scivolare, in fase di staglio puoi inumidire leggermente la base del tuppo prima di inserirlo: la leggera umidità funge da 'colla'." },
+                { titolo: "🌡️ Servila Tiepida", testo: "La brioche siciliana è al massimo a 35-40°C. Se è avanzata, riscaldala in forno a 150°C per 4-5 minuti. Si congela perfettamente da fredda (senza il tuppo per sicurezza) e si scongela a temperatura ambiente in 2 ore." }
+            ],
+            problemi: [
+                { titolo: "🧈 L'impasto non incorda dopo il burro — è unto e scivoloso", causa: "Il burro era troppo caldo o è stato aggiunto tutto in una volta, rompendo la maglia glutinica.", soluzione: "Ferma la planetaria e metti la ciotola in freezer 10 minuti. Riprendi a velocità minima. In futuro: cubetti piccoli, uno alla volta, molta pazienza." },
+                { titolo: "😔 La brioche è densa e non soffice", causa: "Seconda lievitazione insufficiente oppure forno troppo caldo che ha formato la crosta prima che l'interno finisse di lievitare.", soluzione: "Rispetta il raddoppio nella seconda lievitazione: è il segnale, non il tempo. Abbassa il forno di 5-10°C se la superficie scurisce troppo in fretta." },
+                { titolo: "🕳️ Si forma un buco interno dopo la cottura", causa: "Grosse bolle d'aria non eliminate durante la formatura, oppure eccessiva forza nell'arrotolare.", soluzione: "Durante la formatura premi delicatamente l'impasto per sgonfiare le bolle più grosse. Arrotola con movimenti decisi ma non violenti." }
+            ]
+        },
+        cornetti_italiani: {
+            nome: "Cornetti Italiani Sfogliati",
+            foto: "https://images.unsplash.com/photo-1549887534-1541e9326142?w=600&q=80&fit=crop",
+            pesoDefault: 80,
+            tipo: "percentuale",
+            tempi: { attivo: "1h 30min", totale: "18–24 ore", note: "3 giri di sfogliatura + riposi in frigo" },
+            nota: "Il cornetto italiano è diverso dal croissant francese: più morbido, più dolce, leggermente briochato. La sfogliatura crea gli strati caratteristici senza la durezza del burro francese.",
+            ingredienti: {
+                "Farina Manitoba": 70,
+                "Farina 00": 30,
+                "Latte intero": 35,
+                "Uova (sgusciate)": 15,
+                "Zucchero semolato": 15,
+                "Burro (impasto)": 8,
+                "Lievito di birra fresco": 4,
+                "Sale": 1.5,
+                "Miele": 2,
+                "Estratto di vaniglia": 0.5,
+                "Burro (sfogliatura)": 25
+            },
+            passaggi: [
+                "<strong>Impasto base (il pastello):</strong> Nella ciotola della planetaria col gancio, unisci {{Farina Manitoba}} g di Manitoba e {{Farina 00}} g di farina 00. Aggiungi {{Latte intero}} g di latte tiepido (28°C), {{Miele}} g di miele, {{Estratto di vaniglia}} g di vaniglia e sbriciolaci direttamente {{Lievito di birra fresco}} g di lievito fresco. Versa anche {{Uova (sgusciate)}} g di uova sbattute. Avvia a velocità bassa.",
+                "<strong>Struttura dell'impasto:</strong> Aggiungi {{Zucchero semolato}} g di zucchero, poi {{Sale}} g di sale. Infine incorpora {{Burro (impasto)}} g di burro morbido a cubetti uno alla volta. Impasta a velocità media per <strong>8-10 minuti</strong> finché liscio ed elastico. L'impasto deve essere leggermente più sodo di una brioche normale — aiuterà durante la sfogliatura. Forma un rettangolo, avvolgi in pellicola e metti in frigo <strong>1 ora</strong>.",
+                "<strong>Prepara il panetto di burro (per la sfogliatura):</strong> Prendi {{Burro (sfogliatura)}} g di burro freddo da frigo e posizionalo tra due fogli di carta forno. Con il mattarello battilo e stendilo fino a formare un rettangolo di circa 15×20 cm e spessore uniforme di 5-6 mm. Rimettilo in frigo: deve essere freddo ma malleabile, non duro come pietra.",
+                "<strong>Primo giro di sfogliatura:</strong> Stendi il pastello freddo in un rettangolo circa il doppio del panetto di burro. Posiziona il burro al centro. Ripiega i lembi dell'impasto sul burro come una busta chiusa, sigillando bene i bordi. Stendi delicatamente col mattarello in un rettangolo lungo. Piega in tre (come una lettera: bordo basso al centro, bordo alto sopra). Avvolgi in pellicola e riponi in frigo <strong>30 minuti</strong>.",
+                "<strong>Secondo e terzo giro:</strong> Ripeti l'operazione di stesura e piegatura in tre per altri <strong>2 volte</strong>, sempre con 30 minuti di riposo in frigo tra un giro e l'altro. Totale: 3 giri. Dopo l'ultimo giro lascia riposare in frigo <strong>8-12 ore</strong> (anche tutta la notte).",
+                "<strong>Formatura dei cornetti:</strong> Stendi la sfoglia in un rettangolo spesso circa 4-5 mm. Taglia triangoli isosceli con base di circa 8-9 cm. Per ogni triangolo: fai un piccolo taglio (1 cm) al centro della base, allarga leggermente i due angoli e arrotola dal basso verso la punta tirando leggermente la punta. Posiziona con la punta sotto su teglia con carta forno.",
+                "<strong>Lievitazione finale:</strong> Copri con pellicola leggermente unta. Lascia lievitare a <strong>26-28°C per 2-3 ore</strong>. I cornetti sono pronti quando sono visibilmente gonfi e, premendo delicatamente, la forma torna su lentamente. Non accelerare con temperature più alte: rovinereste la sfogliatura.",
+                "<strong>Lucidatura e cottura:</strong> Preriscalda il forno a <strong>185°C ventilato</strong>. Spennella i cornetti con un mix di 1 uovo intero + 1 cucchiaio di latte. Cuoci per <strong>16-18 minuti</strong> fino a doratura profonda e uniforme. Appena sfornati, spennella con sciroppo di zucchero (acqua e zucchero 1:1 bolliti) per lucentezza e morbidezza extra."
+            ],
+            proSkills: [
+                { titolo: "🌡️ La Temperatura è Tutto nella Sfogliatura", testo: "Sia il pastello che il burro devono essere sempre freddi durante la sfogliatura. Se il burro inizia a fondersi e a mescolarsi con l'impasto invece di rimanere in strati separati, metti tutto in frigo 20 minuti. In estate lavora in cucina fredda o nelle ore più fresche." },
+                { titolo: "🧈 Che Burro Usare per la Sfogliatura", testo: "Usa un burro con almeno 82% di grassi (burro tedesco, francese o da centrifuga). I burri da supermercato standard (80% di grassi) contengono più acqua e rendono la sfogliatura meno definita. La differenza nel risultato finale è notevole." },
+                { titolo: "📐 Il Taglio del Triangolo", testo: "Più il triangolo è lungo e stretto, più il cornetto sarà avvolto con molti giri e risulterà allungato (stile francese). Un triangolo più corto e largo darà un cornetto più 'panciuto' e italiano. Per la versione tradizionale italiana, punta a un triangolo con base 9 cm e altezza 20 cm." },
+                { titolo: "✨ Lo Sciroppo Finale: non saltarlo", testo: "Lo sciroppo di zucchero spennellato appena usciti dal forno ha un doppio effetto: dona la lucentezza caratteristica del cornetto da bar e mantiene la crosta morbida più a lungo. Senza sciroppo, la crosta tende a indurirsi dopo 30 minuti." }
+            ],
+            problemi: [
+                { titolo: "🧱 Il burro si rompe a pezzi durante la sfogliatura", causa: "Il burro era troppo freddo e duro, non malleabile. Si è fratturato invece di scorrere tra gli strati.", soluzione: "Il burro per la sfogliatura deve essere freddo ma flessibile: se pieghi il panetto non deve spezzarsi. Se troppo duro, lascialo 5 minuti a temperatura ambiente. Se troppo morbido, rimettilo in frigo 10 minuti." },
+                { titolo: "😿 Gli strati non si vedono dopo la cottura", causa: "Il burro si è fuso e mescolato all'impasto durante la lavorazione (impasto troppo caldo), oppure i giri di sfogliatura erano insufficienti.", soluzione: "Rispetta i tempi di riposo in frigo tra un giro e l'altro. Se la cucina è calda (oltre 22°C), aumenta i tempi di riposo a 45 minuti. Lavora sempre velocemente con il mattarello." },
+                { titolo: "😴 I cornetti non lievitano nella fase finale", causa: "Il lievito era stato inibito dal freddo eccessivo o i cornetti sono stati messi a lievitare in un ambiente troppo freddo.", soluzione: "La lievitazione finale deve avvenire a 26-28°C. Se la cucina è fredda, usa il forno spento con luce accesa e un pentolino di acqua calda sul fondo per creare umidità e calore." }
+            ]
+        },
+        pan_brioche: {
+            nome: "Pan Brioche",
+            foto: "https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?w=600&q=80&fit=crop",
+            pesoDefault: 500,
+            tipo: "percentuale",
+            tempi: { attivo: "40 min", totale: "12–15 ore", note: "Di cui 8–10h in frigo" },
+            nota: "Il pan brioche da forno professionale: mollica filante e soffice, crosta sottile e dorata. Perfetto per toast, tramezzini gourmet o da gustare da solo con burro e confettura.",
+            ingredienti: {
+                "Farina Manitoba": 100,
+                "Latte intero": 45,
+                "Uova (sgusciate)": 25,
+                "Zucchero semolato": 12,
+                "Burro": 20,
+                "Lievito di birra fresco": 3.5,
+                "Sale": 1.8,
+                "Miele": 1.5
+            },
+            passaggi: [
+                "<strong>Impasto base in planetaria:</strong> Nella ciotola della planetaria con il gancio, versa {{Farina Manitoba}} g di farina Manitoba. Aggiungi {{Latte intero}} g di latte tiepido (28-30°C) con {{Miele}} g di miele e sbriciolaci direttamente {{Lievito di birra fresco}} g di lievito fresco. Aggiungi {{Uova (sgusciate)}} g di uova sbattute. Avvia a velocità minima (1) per 2 minuti fino ad amalgamare.",
+                "<strong>Aggiungi zucchero e sale:</strong> Con la planetaria a velocità bassa, aggiungi {{Zucchero semolato}} g di zucchero in due riprese. Poi {{Sale}} g di sale. Aumenta a velocità media (3) e impasta per <strong>6 minuti</strong>.",
+                "<strong>Inserimento burro:</strong> Taglia {{Burro}} g di burro morbido (pomata, 18-20°C) in cubetti piccoli. Aggiungili uno alla volta con la planetaria a velocità media, aspettando sempre l'assorbimento. Ci vorranno <strong>8-10 minuti</strong>. Finisci a velocità medio-alta per 3 minuti: l'impasto deve essere liscissimo, elastico e molto morbido. <strong>Test del velo:</strong> deve formare una membrana perfetta senza strapparsi.",
+                "<strong>Prima lievitazione + frigo:</strong> Trasferisci l'impasto in una ciotola unta. Copri con pellicola aderente. Lascia a temperatura ambiente per <strong>60 minuti</strong>, poi in frigo a 4°C per <strong>8-10 ore</strong>. Il freddo renderà l'impasto maneggevole e svilupperà il sapore.",
+                "<strong>Formatura del filone:</strong> Estrai dal frigo e lascia acclimatare <strong>15-20 minuti</strong>. Stendi l'impasto in un rettangolo largo quanto lo stampo. Arrotolalo stretto su se stesso dal lato corto, sigillando bene il bordo finale pizzicando. Posizionalo nello stampo da plumcake (25x10 cm) imburrato e infarinato con la cucitura verso il basso. In alternativa, dividi in 3-4 palline e disponile in fila nello stampo per ottenere la versione 'a tuppo' con sezioni distaccabili.",
+                "<strong>Seconda lievitazione:</strong> Copri lo stampo con pellicola unta. Lascia lievitare a <strong>27-28°C per 90-120 minuti</strong>. Il pan brioche è pronto quando l'impasto fuoriesce dallo stampo di circa 1-2 cm. Sii paziente: questa lievitazione è quella che determina la sofficità finale.",
+                "<strong>Lucidatura e cottura:</strong> Preriscalda il forno a <strong>170°C ventilato</strong>. Spennella la superficie con un mix di 1 tuorlo + 2 cucchiai di latte usando un pennello morbido. Cuoci per <strong>28-32 minuti</strong>. Se la superficie scurisce troppo in fretta, copri con un foglio di alluminio a metà cottura. È cotto quando il centro raggiunge 93-95°C (termometro a sonda) o quando bussando sul fondo suona vuoto. Sforna e lascia raffreddare nello stampo 10 minuti, poi su griglia fino a completo raffreddamento."
+            ],
+            proSkills: [
+                { titolo: "🍞 Stampo Stretto = Mollica Più Alta", testo: "La forma dello stampo influenza direttamente la mollica. Uno stampo stretto e alto costringe l'impasto a svilupparsi in verticale, creando quella mollica alta e filante da pan brioche da pasticceria. Uno stampo largo dà un pane più piatto e meno spettacolare." },
+                { titolo: "🌡️ Il Termometro a Sonda: non è un lusso", testo: "Il pan brioche è cotto quando il cuore raggiunge 93-95°C. Sotto questa temperatura la mollica è ancora cruda al centro anche se la superficie è perfettamente dorata. Un termometro da forno da 10€ elimina ogni incertezza ed è uno degli investimenti più utili in panificazione." },
+                { titolo: "✂️ La Versione a Sezioni Distaccabili", testo: "Dividi l'impasto in 4 palline uguali e disponile in fila nello stampo. Durante la lievitazione si uniranno formando un unico pane che, dopo la cottura, si stacca facilmente a sezioni. Molto scenografica e pratica per la colazione." },
+                { titolo: "📦 Come Conservarlo", testo: "Avvolto in pellicola o in un sacchetto ermetico si mantiene morbido 2-3 giorni. Si congela perfettamente da freddo a fette: scongela in toaster direttamente dal freezer in 2-3 minuti. Non conservare in frigo: il freddo accelera la retrogradazione dell'amido e lo indurisce." }
+            ],
+            problemi: [
+                { titolo: "📉 Il pan brioche collassa dopo averlo sfornato", causa: "Era sotto-cotto al centro: la struttura non era abbastanza solida per reggersi. Oppure è stato rimosso dallo stampo troppo presto.", soluzione: "Controlla sempre con termometro a sonda (93-95°C). Lascia sempre nello stampo almeno 10 minuti dopo aver sfornato prima di sformarlo." },
+                { titolo: "🧱 La mollica è densa e gommosa, non soffice", causa: "Impasto troppo poco incordato, burro mal incorporato oppure seconda lievitazione incompleta.", soluzione: "Il test del velo prima di aggiungere il burro è indispensabile. Rispetta il raddoppio nella seconda lievitazione: il pane deve fuoriuscire dallo stampo di almeno 1 cm prima di infornare." },
+                { titolo: "🌑 La superficie è troppo scura prima che sia cotto", causa: "Forno troppo caldo o posizione troppo alta nel forno.", soluzione: "Cuoci sempre nella metà inferiore del forno. Copri con alluminio non appena la superficie raggiunge il colore desiderato. Abbassa il forno di 10°C se succede sistematicamente." }
+            ]
+                },
+        panettone: {
+            nome: "Panettone Artigianale",
+            foto: "https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=600&q=80",
+            pesoDefault: 1000,
+            tipo: "percentuale",
+            tempi: { attivo: "2h 30min", totale: "3 giorni", note: "Lievito madre obbligatorio — doppia impastatura" },
+            nota: "⚠️ Ricetta professionale da lievito madre con doppia impastatura. Richiede lievito madre attivo rinfrescato 3 volte. NON sostituibile con lievito di birra.",
+            ingredienti: {
+                "Farina panettone (W380+)": 100,
+                "Lievito madre (3 rinfreschi)": 20,
+                "Zucchero semolato": 28,
+                "Burro (82% grassi)": 32,
+                "Tuorli d'uovo": 24,
+                "Acqua": 43,
+                "Sale": 1.1,
+                "Miele d'acacia": 2,
+                "Malto diastasico": 0.3,
+                "Pasta d'arancia": 3,
+                "Vaniglia (semi)": 0.5,
+                "Uvetta sultanina": 50,
+                "Scorze d'arancia candite": 25,
+                "Cedro candito": 10,
+                "Burro (scarpatura)": 0.5
+            },
+            passaggi: [
+                "<strong>Giorni prima — Rinfreschi del lievito madre:</strong> Il lievito madre deve essere rinfrescato 3 volte consecutive ogni 4 ore il giorno prima. Rinfresco: 100g lievito madre + 100g farina W300+ + 45g acqua a 26°C. Impasta, forma un cilindro, fai un taglio a croce e lascia a 28°C per 4 ore. Dopo il terzo rinfresco deve triplicare. Usa {{Lievito madre (3 rinfreschi)}} g di lievito così preparato.",
+                "<strong>Primo impasto — Struttura:</strong> Nella planetaria con il gancio, versa {{Acqua}} g di acqua a 26°C con {{Malto diastasico}} g di malto e {{Lievito madre (3 rinfreschi)}} g di lievito madre a pezzetti. Aggiungi il 90% della farina totale ({{Farina panettone (W380+)}} g — tienine da parte il 10% per il secondo impasto). Avvia a velocità 1. Aggiungi {{Zucchero semolato}} g di zucchero in 3 riprese. Alterna {{Tuorli d'uovo}} g di tuorli e {{Burro (82% grassi)}} g di burro morbido a cubetti in più riprese. Impasta a velocità 2 per <strong>20-25 minuti</strong> fino al test del velo. Temperatura finale: <strong>26-27°C max</strong>.",
+                "<strong>Prima lievitazione (puntata):</strong> Trasferisci l'impasto in una ciotola unta, copri con pellicola e lascia triplicare a <strong>26-28°C per 12-14 ore</strong>. Il triplicamento è il criterio, non il tempo. In forno spento con luce accesa è ideale.",
+                "<strong>Prepara la frutta:</strong> Ammolla {{Uvetta sultanina}} g di uvetta in acqua tiepida 30 minuti, scola e asciuga bene con carta assorbente. Lasciala in frigo scoperta tutta la notte: deve essere completamente asciutta. Mescola {{Pasta d'arancia}} g di pasta d'arancia con i semi di {{Vaniglia (semi)}} g di vaniglia e {{Miele d'acacia}} g di miele. Taglia {{Scorze d'arancia candite}} g di scorze e {{Cedro candito}} g di cedro a cubetti.",
+                "<strong>Secondo impasto:</strong> Riavvia la planetaria con il primo impasto triplicato a velocità 1. Aggiungi la farina rimanente (10%) e il mix aromi. Impasta 5 minuti. Aggiungi {{Sale}} g di sale. Incorpora il burro rimanente morbido a cubetti uno alla volta. Porta a incordatura completa a velocità 2 per <strong>15-18 minuti</strong>. Con la planetaria al minimo, incorpora uvetta, scorze e cedro in 2-3 riprese. Temperatura finale: <strong>27°C max</strong>.",
+                "<strong>Riposo e pirlatura:</strong> Lascia riposare l'impasto coperto sul piano per <strong>40-60 minuti</strong>. Pesa le porzioni: per pirottino da 1kg usa 1080g (il +8% compensa il calo in cottura). Esegui la pirlatura 2 volte con 20 minuti di riposo tra l'una e l'altra: arrotola l'impasto sul piano in senso circolare stringendolo verso il basso per creare tensione in superficie. Deposita nel pirottino.",
+                "<strong>Lievitazione in pirottino (appretto):</strong> A <strong>28-30°C con 75% di umidità per 6-8 ore</strong>. Il panettone è pronto da infornare quando la cupola raggiunge il bordo superiore del pirottino con superficie liscia e tesa.",
+                "<strong>Scarpatura e cottura:</strong> Con una lametta, incidi una croce poco profonda sulla cupola e posiziona al centro {{Burro (scarpatura)}} g di burro freddo. Inforna a <strong>170°C statico per 50-55 minuti</strong> (termometro a sonda al cuore: 94°C). Appena sfornato, infilza la base con ferri appositi e capovolgi: deve restare capovolto <strong>8-10 ore</strong> per non collassare.",
+                "<strong>Raffreddamento e conservazione:</strong> Dopo 10-12 ore capovolto, rimetti diritto. Prima di sigillare nel sacchetto, spruzza un velo di alcool alimentare (grappa o alcool 95°) per prolungare la conservazione. Il panettone raggiunge il suo massimo a 48-72 ore dalla cottura."
+            ],
+            proSkills: [
+                { titolo: "🌡️ La Temperatura: il Parametro Critico", testo: "Sopra i 27°C la maglia glutinica si indebolisce e il burro si separa. Usa sempre un termometro a sonda durante l'impasto. In estate: acqua ghiacciata, ciotola in freezer tra un passaggio e l'altro. Non è un optional: è condizione necessaria per riuscire." },
+                { titolo: "📊 Il Lievito Madre: l'Elemento Decisivo", testo: "Il 90% dei fallimenti del panettone dipende dal lievito madre. Deve triplicare in 4 ore a 28°C dopo il terzo rinfresco. Se non lo fa, non procedere: meglio perdere un giorno che perdere l'intero lavoro." },
+                { titolo: "🔄 La Pirlatura: non è Decorativa", testo: "Crea la tensione superficiale che guida la lievitazione verso l'alto formando la cupola. Un impasto mal pirlato produce un panettone piatto o asimmetrico. Ruota l'impasto trascinandolo verso di te sul piano con movimenti decisi ma non violenti." },
+                { titolo: "🙃 Il Capovolgimento è Obbligatorio", testo: "La struttura interna non regge il proprio peso mentre è ancora calda. Capovolgendo, la gravità mantiene in tensione la maglia mentre si raffredda. Saltare questo passaggio quasi certamente produce un collasso interno con mollica compatta e alveolatura persa." }
+            ],
+            problemi: [
+                { titolo: "😰 L'impasto non incorda — appiccicoso e smollato", causa: "Burro aggiunto troppo velocemente, temperatura oltre i 27°C, o lievito madre debole.", soluzione: "Ferma tutto e metti ciotola e impasto in freezer 15 minuti. Riprendi a velocità 1. Se non riprende la corda è da scartare. La prevenzione è tutto: rispetta temperature e forza del lievito madre." },
+                { titolo: "📉 Il panettone non cresce o cresce pochissimo", causa: "Lievito madre non abbastanza attivo o acidità troppo alta (rinfreschi insufficienti).", soluzione: "Non infornare: è inutile. Riparti con un lievito madre più forte e fai almeno 3 rinfreschi consecutivi ogni 4 ore a 28°C, verificando il triplicamento." },
+                { titolo: "🕸️ Alveolatura irregolare con buchi grandi e uvetta sul fondo", causa: "Frutta non abbastanza asciutta (ha rilasciato umidità) o incorporata troppo violentemente.", soluzione: "L'uvetta deve essere completamente asciutta: dopo il bagno, asciuga e lascia in frigo scoperta una notte. Aggiungila sempre con planetaria al minimo, in 2-3 riprese." },
+                { titolo: "💥 La cupola si spacca di lato invece che in cima", causa: "Scarpatura troppo superficiale o tensione superficiale non uniforme nella pirlatura.", soluzione: "La scarpatura deve essere decisa (2-3mm di profondità) e centrata. Cura la pirlatura: una cupola ben tesa si apre dove vuoi tu." }
+            ]
+        },
+        colomba: {
+            nome: "Colomba Pasquale",
+            foto: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=600&q=80",
+            pesoDefault: 1000,
+            tipo: "percentuale",
+            tempi: { attivo: "2h 30min", totale: "3 giorni", note: "Lievito madre obbligatorio — doppia impastatura" },
+            nota: "⚠️ Ricetta professionale da lievito madre — la tradizione pasquale italiana. Come il panettone, richiede lievito madre attivo. La glassa alle mandorle è il suo elemento distintivo.",
+            ingredienti: {
+                "Farina panettone (W380+)": 100,
+                "Lievito madre (3 rinfreschi)": 20,
+                "Zucchero semolato": 26,
+                "Burro (82% grassi)": 28,
+                "Tuorli d'uovo": 22,
+                "Acqua": 42,
+                "Sale": 1.0,
+                "Miele d'acacia": 2,
+                "Malto diastasico": 0.3,
+                "Pasta d'arancia": 3,
+                "Vaniglia (semi)": 0.5,
+                "Scorze d'arancia candite": 40,
+                "Farina di mandorle (glassa)": 6,
+                "Zucchero a velo (glassa)": 10,
+                "Albumi (glassa)": 5,
+                "Amido di mais (glassa)": 1,
+                "Mandorle intere (decorazione)": 15,
+                "Granella di zucchero (decorazione)": 8
+            },
+            passaggi: [
+                "<strong>Giorni prima — Rinfreschi del lievito madre:</strong> Identico al panettone: 3 rinfreschi consecutivi ogni 4 ore il giorno prima. Il lievito deve triplicare in 4 ore a 28°C dopo il terzo rinfresco. Usa {{Lievito madre (3 rinfreschi)}} g di lievito così preparato.",
+                "<strong>Primo impasto:</strong> Nella planetaria con il gancio, versa {{Acqua}} g di acqua a 26°C con {{Malto diastasico}} g di malto e {{Lievito madre (3 rinfreschi)}} g di lievito madre a pezzetti. Aggiungi il 90% di {{Farina panettone (W380+)}} g di farina (tienine il 10% da parte). Avvia a velocità 1. Aggiungi {{Zucchero semolato}} g di zucchero in 3 riprese, poi alterna {{Tuorli d'uovo}} g di tuorli e {{Burro (82% grassi)}} g di burro morbido a cubetti. Impasta a velocità 2 per <strong>20 minuti</strong>. Temperatura finale: <strong>26-27°C</strong>.",
+                "<strong>Prima lievitazione:</strong> Copri con pellicola e lascia triplicare a <strong>26-28°C per 12-14 ore</strong>.",
+                "<strong>Prepara la glassa:</strong> Il giorno prima, mescola {{Farina di mandorle (glassa)}} g di farina di mandorle, {{Zucchero a velo (glassa)}} g di zucchero a velo e {{Amido di mais (glassa)}} g di amido di mais. Aggiungi {{Albumi (glassa)}} g di albumi a filo mescolando fino a ottenere una glassa densa (deve cadere lentamente dal cucchiaio). Copri e conserva in frigo: riposata un giorno aderisce meglio.",
+                "<strong>Prepara aromi e scorze:</strong> Mescola {{Pasta d'arancia}} g di pasta d'arancia con i semi di {{Vaniglia (semi)}} g di vaniglia e {{Miele d'acacia}} g di miele. Taglia {{Scorze d'arancia candite}} g di scorze d'arancia a cubetti di circa 1 cm.",
+                "<strong>Secondo impasto:</strong> Riavvia la planetaria con il primo impasto triplicato. Aggiungi la farina rimanente (10%) e il mix aromi. Impasta 5 minuti. Aggiungi {{Sale}} g di sale, poi il burro rimanente morbido a cubetti uno alla volta. Porta a incordatura a velocità 2 per <strong>15-18 minuti</strong>. Con la planetaria al minimo incorpora le scorze d'arancia in 2-3 riprese. Temperatura finale: <strong>27°C max</strong>.",
+                "<strong>Riposo, pirlatura e formatura a colomba:</strong> Riposo coperto 40-60 minuti. Per uno stampo da 1kg: pesa 1080g totali divisi in 2 pezzi uguali da 540g. Pirlatura su entrambi. Il primo pezzo va allungato in forma di salsiccia e disposto orizzontalmente nello stampo (le ali). Il secondo va arrotolato più corto e disposto perpendicolare sopra (il corpo). I due pezzi si saldano durante la lievitazione.",
+                "<strong>Lievitazione in stampo:</strong> A <strong>28-30°C con umidità per 5-7 ore</strong>. Pronta da infornare quando la cupola supera il bordo dello stampo di 1-2 cm.",
+                "<strong>Glassatura e decorazione:</strong> Distribuisci la glassa sulla superficie con spatola in strato uniforme di 3-4mm. Disponi {{Mandorle intere (decorazione)}} g di mandorle intere premendo leggermente. Cospargi con {{Granella di zucchero (decorazione)}} g di granella di zucchero e abbondante zucchero a velo.",
+                "<strong>Cottura e capovolgimento:</strong> Inforna a <strong>165°C statico per 50-55 minuti</strong> (termometro a sonda al cuore: 94°C). Appena sfornata, infilza la base e capovolgi immediatamente: lascia capovolta <strong>6-8 ore</strong>."
+            ],
+            proSkills: [
+                { titolo: "🕊️ La Formatura a Due Pezzi", testo: "Il segreto di una colomba simmetrica è nella formatura: ali (salsiccia lunga) e corpo (salsiccia corta) devono essere pirlati con la stessa tensione e posizionati perfettamente perpendicolari. Durante la lievitazione si saldano naturalmente se sono a stretto contatto nello stampo." },
+                { titolo: "🍊 Scorze Candite: la qualità fa la differenza", testo: "Le scorze d'arancia sono l'unica farcitura della colomba: usane di artigianali (Agrimontana, Toschi o da pasticceria). Devono essere umide, profumate e non stucchevoli. Le scorze da supermercato sono spesso secche e insipide: rovinano un prodotto fatto bene." },
+                { titolo: "🥚 La Glassa: tempi e consistenza", testo: "Va applicata solo quando la colomba è completamente lievitata e fredda al tatto, subito prima di infornare. Se applicata troppo presto il peso fa collassare la lievitazione. La glassa riposata in frigo almeno una notte è più stabile e aderisce meglio senza scivolare." },
+                { titolo: "🌡️ 165°C invece di 170°C", testo: "La colomba cuoce 5°C più bassa del panettone perché la glassa alle mandorle brucia facilmente. Se la superficie scurisce troppo prima che il cuore raggiunga 94°C, copri con alluminio senza aprire il forno bruscamente." }
+            ],
+            problemi: [
+                { titolo: "🍯 La glassa scivola via durante la cottura", causa: "Glassa troppo liquida o applicata su superficie sudata/calda.", soluzione: "La glassa deve essere densa: se cola troppo veloce aggiungi farina di mandorle. Applicala sempre su impasto freddo al tatto. Se c'è condensa sulla superficie, asciuga delicatamente con carta assorbente prima di glassare." },
+                { titolo: "🔥 La glassa brucia ma il centro non è cotto", causa: "Forno troppo caldo o posizione troppo alta.", soluzione: "Cuoci sempre nel ripiano basso a 165°C statico. Dopo 30-35 minuti copri con alluminio per i restanti 20 minuti. Usa sempre il termometro a sonda." },
+                { titolo: "😔 Le ali si staccano dal corpo in cottura", causa: "I due pezzi non erano a stretto contatto nello stampo o la pirlatura era insufficiente.", soluzione: "Durante la formatura assicurati che corpo e ali si tocchino bene. Pirlatura corretta su entrambi i pezzi: se ben eseguita i due impasti si saldano naturalmente durante la lievitazione." }
+            ]
+        }
 
-    let categoriaAttiva = "";
-    let ricettaAttivaId = "";
+    }};
 
-    function getFoto(ricetta, cat) {
-        if (ricetta.foto && ricetta.foto !== "") return ricetta.foto;
-        return (cat === "SALATI") ? IMG_PLACEHOLDER_SALATO : IMG_PLACEHOLDER_DOLCE;
-    }
+// ── STATO ────────────────────────────────────────────────────────────────────
+let catAttiva = "";
+let idAttivo  = "";
 
-    function searchRecipes() {
-        const query = document.getElementById('mainSearch').value.toLowerCase();
-        const resultsDiv = document.getElementById('search-results');
-        resultsDiv.innerHTML = "";
-        if (query.length < 1) { resultsDiv.style.display = "none"; return; }
+// ── UTILITY ──────────────────────────────────────────────────────────────────
+function getImg(r, cat) {
+    return (r.foto && r.foto !== "") ? r.foto : (cat === "SALATI" ? IMG.salato : IMG.dolce);
+}
 
-        let trovate = 0;
-        for (let cat in ARCHIVIO_RICETTE) {
-            for (let id in ARCHIVIO_RICETTE[cat]) {
-                const r = ARCHIVIO_RICETTE[cat][id];
-                if (r.nome.toLowerCase().includes(query)) {
-                    let item = document.createElement('div');
-                    item.className = "search-item";
-                    item.innerHTML = `<img src="${getFoto(r, cat)}"> <div><strong>${r.nome}</strong><br><small style="color:#999">${cat}</small></div>`;
-                    item.onclick = () => { categoriaAttiva = cat; selectRecipe(id); document.getElementById('mainSearch').value = ""; resultsDiv.style.display = "none"; };
-                    resultsDiv.appendChild(item);
-                    trovate++;
-                }
+function arrotonda(val, nome) {
+    const precisi = ["Lievito di birra fresco","Malto diastasico","Malto/Miele/Zucchero","Miele","Miele d'acacia","Estratto di vaniglia","Sale","Burro (sfogliatura)","Burro (impasto)","Burro (scarpatura)","Vaniglia (semi)","Pasta d'arancia","Amido di mais (glassa)"];
+    if (precisi.includes(nome)) return parseFloat(val.toFixed(1));
+    return (val - Math.floor(val) >= 0.6) ? Math.ceil(val) : Math.floor(val);
+}
+
+// ── RICERCA ───────────────────────────────────────────────────────────────────
+function searchRecipes() {
+    const q = document.getElementById('mainSearch').value.toLowerCase().trim();
+    const box = document.getElementById('search-results');
+    box.innerHTML = "";
+    if (q.length < 1) { box.style.display = "none"; return; }
+    let n = 0;
+    for (const cat in RICETTE) {
+        for (const id in RICETTE[cat]) {
+            const r = RICETTE[cat][id];
+            if (r.nome.toLowerCase().includes(q)) {
+                const d = document.createElement('div');
+                d.className = "s-item";
+                d.innerHTML = `<img src="${getImg(r, cat)}" onerror="this.src='${IMG.salato}'">
+                    <div><div class="s-item-name">${r.nome}</div><div class="s-item-cat">${cat}</div></div>`;
+                d.onclick = () => { catAttiva = cat; selectRecipe(id); document.getElementById('mainSearch').value = ""; box.style.display = "none"; };
+                box.appendChild(d); n++;
             }
         }
-        resultsDiv.style.display = trovate > 0 ? "block" : "none";
     }
+    box.style.display = n > 0 ? "block" : "none";
+}
 
-    function openModal(cat) {
-        categoriaAttiva = cat;
-        document.getElementById('modalTitle').innerText = (cat === 'SALATI') ? "🍕 Impasti Salati" : "🥐 Impasti Dolci";
-        const listContainer = document.getElementById('recipeList');
-        listContainer.innerHTML = "";
-        const ricette = ARCHIVIO_RICETTE[cat];
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(cat) {
+    catAttiva = cat;
+    document.getElementById('modalTitle').innerText = cat === 'SALATI' ? "🍕 Impasti Salati" : "🥐 Impasti Dolci";
+    const list = document.getElementById('recipeList');
+    list.innerHTML = "";
+    const ricette = RICETTE[cat];
+    if (!ricette || Object.keys(ricette).length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:var(--muted);padding:20px">Nessuna ricetta disponibile</p>';
+    } else {
         Object.keys(ricette).sort().forEach(id => {
             const r = ricette[id];
-            let item = document.createElement('div');
-            item.className = "recipe-link";
-            item.innerHTML = `<img src="${getFoto(r, cat)}"> <span>${r.nome}</span>`;
-            item.onclick = () => selectRecipe(id);
-            listContainer.appendChild(item);
+            const d = document.createElement('div');
+            d.className = "r-link";
+            d.innerHTML = `<img src="${getImg(r, cat)}" onerror="this.src='${IMG.dolce}'">
+                <div style="flex:1">
+                    <div class="r-link-name">${r.nome}</div>
+                    <div class="r-link-meta">${r.nota ? r.nota.substring(0,55)+'…' : ''}</div>
+                    ${r.tempi ? `<div class="r-link-tempi">
+                        <span class="tempo-chip attivo">⚡ Attivo: ${r.tempi.attivo}</span>
+                        <span class="tempo-chip totale">⏱ Totale: ${r.tempi.totale}</span>
+                    </div>` : ''}
+                </div>`;
+            d.onclick = () => selectRecipe(id);
+            list.appendChild(d);
         });
-        document.getElementById('modalOverlay').style.display = "flex";
+    }
+    document.getElementById('modalOverlay').style.display = "flex";
+}
+
+function closeModal() { document.getElementById('modalOverlay').style.display = "none"; }
+
+// ── SELEZIONA RICETTA ─────────────────────────────────────────────────────────
+function selectRecipe(id) {
+    idAttivo = id;
+    const r = RICETTE[catAttiva][id];
+    document.getElementById('recipe-hero').src = getImg(r, catAttiva);
+    document.getElementById('recipe-badge').textContent = catAttiva === 'SALATI' ? '🍕 Salato' : '🥐 Dolce';
+    document.getElementById('recipe-title').textContent = r.nome;
+    const noteEl = document.getElementById('recipe-note');
+    if (r.nota) { noteEl.innerHTML = '📝 ' + r.nota; noteEl.classList.add('visible'); }
+    else { noteEl.classList.remove('visible'); }
+    // Tempi
+    const tempiEl = document.getElementById('recipe-tempi');
+    if (r.tempi) {
+        tempiEl.innerHTML = `
+            <span class="tempo-chip attivo">⚡ Lavoro attivo: ${r.tempi.attivo}</span>
+            <span class="tempo-chip totale">⏱ Tempo totale: ${r.tempi.totale}</span>
+            ${r.tempi.note ? `<span class="tempo-chip note">ℹ️ ${r.tempi.note}</span>` : ''}`;
+        tempiEl.style.display = 'flex';
+    } else {
+        tempiEl.style.display = 'none';
+    }
+    document.getElementById('peso-panetto').value = r.pesoDefault;
+    document.getElementById('calculator-ui').style.display = "block";
+    document.getElementById('risultato').style.display = "none";
+    closeModal();
+    setTimeout(() => document.getElementById('calculator-ui').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// ── CALCOLA ───────────────────────────────────────────────────────────────────
+function calcola() {
+    const r = RICETTE[catAttiva][idAttivo];
+    if (!r) return;
+    const qty = parseInt(document.getElementById('quantita').value) || 1;
+    const target = parseFloat(document.getElementById('peso-panetto').value) * qty;
+    if (!target || target <= 0) { alert("Inserisci il peso del panetto!"); return; }
+
+    // Calcolo dosi
+    let dosi = {};
+    if (r.tipo === "percentuale") {
+        const sum = Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
+        const fBase = target / (sum / 100);
+        for (const [k, v] of Object.entries(r.ingredienti)) dosi[k] = (fBase * v) / 100;
+    } else {
+        // tipo "fissa": se c'è pesoBase usa quello, altrimenti somma gli ingredienti
+        const riferimento = r.pesoBase ? r.pesoBase : Object.values(r.ingredienti).reduce((a, b) => a + b, 0);
+        const m = target / riferimento;
+        for (const [k, v] of Object.entries(r.ingredienti)) dosi[k] = v * m;
+    }
+    const dosiF = {};
+    for (const k in dosi) dosiF[k] = arrotonda(dosi[k], k);
+
+    // ── HTML RISULTATO ──
+    // Tempi nel risultato
+    let html = '';
+    if (r.tempi) {
+        html += `<div class="tempi-bar" style="margin-bottom:16px">
+            <span class="tempo-chip attivo">⚡ Lavoro attivo: ${r.tempi.attivo}</span>
+            <span class="tempo-chip totale">⏱ Tempo totale: ${r.tempi.totale}</span>
+            ${r.tempi.note ? `<span class="tempo-chip note">ℹ️ ${r.tempi.note}</span>` : ''}
+        </div>`;
+    }
+    html += `
+        <div class="ing-card">
+            <div class="ing-header">
+                <h3>${r.nome}</h3>
+                <span class="ing-qty-badge">${qty} × ${document.getElementById('peso-panetto').value} g</span>
+            </div>`;
+    for (const [k, v] of Object.entries(dosiF)) {
+        html += `<div class="ing-row"><span class="ing-name">${k}</span><span class="ing-val">${v} g</span></div>`;
+    }
+    html += `</div>`;
+
+    // Tangzhong
+    if (r.roux) {
+        const fKey = Object.keys(r.ingredienti)[0];
+        const fRoux = arrotonda(dosi[fKey] * 0.1, "");
+        html += `<div class="extra-card tangzhong">
+            <h4>🥣 Mung Roux — Tangzhong</h4>
+            <div class="ing-row"><span class="ing-name">Farina (dal totale)</span><span class="ing-val">${fRoux} g</span></div>
+            <div class="ing-row"><span class="ing-name">Latte (dal totale)</span><span class="ing-val">${fRoux*5} g</span></div>
+        </div>`;
     }
 
-    function closeModal() { document.getElementById('modalOverlay').style.display = "none"; }
-
-    function selectRecipe(id) {
-        ricettaAttivaId = id;
-        const ricetta = ARCHIVIO_RICETTE[categoriaAttiva][id];
-        document.getElementById('recipe-hero').src = getFoto(ricetta, categoriaAttiva);
-        document.getElementById('selected-recipe-name').innerText = "SELEZIONE: " + ricetta.nome.toUpperCase();
-        document.getElementById('peso-panetto').value = ricetta.pesoDefault;
-        document.getElementById('calculator-ui').style.display = "block";
-        document.getElementById('risultato').style.display = "none";
-        closeModal();
-        window.scrollTo({ top: document.getElementById('calculator-ui').offsetTop, behavior: 'smooth' });
-    }
-
-    // (Le funzioni arrotonda e calcola rimangono invariate rispetto alla versione precedente)
-    function arrotonda(val, nome) {
-        if (["Lievito di birra fresco", "Malto diastasico", "Malto/Miele/Zucchero"].includes(nome)) return parseFloat(val.toFixed(2));
-        return (val - Math.floor(val) >= 0.6) ? Math.ceil(val) : Math.floor(val);
-    }
-
-    function calcola() {
-        const ricetta = ARCHIVIO_RICETTE[categoriaAttiva][ricettaAttivaId];
-        const qty = parseInt(document.getElementById('quantita').value);
-        const target = parseFloat(document.getElementById('peso-panetto').value) * qty;
-        if (!target) return alert("Inserisci il peso!");
-
-        let dosi = {};
-        if (ricetta.tipo === "percentuale") {
-            const sum = Object.values(ricetta.ingredienti).reduce((a, b) => a + b, 0);
-            const farinaBase = target / (sum / 100);
-            for (const [ing, p] of Object.entries(ricetta.ingredienti)) dosi[ing] = (farinaBase * p) / 100;
-        } else {
-            const sum = Object.values(ricetta.ingredienti).reduce((a, b) => a + b, 0);
-            const m = target / sum;
-            for (const [ing, q] of Object.entries(ricetta.ingredienti)) dosi[ing] = q * m;
-        }
-
-        let dosiFinali = {};
-        for(let key in dosi) { dosiFinali[key] = arrotonda(dosi[key], key); }
-
-        let html = `<div class="card"><h3>${qty}x ${ricetta.nome}</h3>`;
-        for (const [ing, q] of Object.entries(dosiFinali)) {
-            html += `<div class="riga-ingrediente"><span>${ing}</span><strong>${q} g</strong></div>`;
+    // Salamoia
+    if (r.salamoia) {
+        html += `<div class="extra-card salamoia"><h4>🌊 Salamoia (per teglia)</h4>`;
+        for (const [k, v] of Object.entries(r.salamoia)) {
+            const val = typeof v === 'number' ? `${arrotonda(v * qty, "")} g` : v;
+            html += `<div class="ing-row"><span class="ing-name">${k}</span><span class="ing-val">${val}</span></div>`;
         }
         html += `</div>`;
-
-        if (ricetta.roux) {
-            const fRoux = arrotonda(dosi["Farina (Manitoba)"] * 0.1, "");
-            html += `<div class="extra-card tangzhong" style="background:#fef9e7; padding:15px; border-radius:15px; margin-bottom:15px; border-left:5px solid var(--accent-color)">
-                    <h4 style="margin:0 0 10px 0">🥣 Mung Roux (Tangzhong)</h4>
-                    <div class="riga-ingrediente"><span>Farina (dal totale)</span><strong>${fRoux} g</strong></div>
-                    <div class="riga-ingrediente"><span>Latte (dal totale)</span><strong>${fRoux*5} g</strong></div></div>`;
-        }
-
-        if (ricetta.salamoia) {
-            html += `<div class="extra-card salamoia" style="background:#eef9ff; padding:15px; border-radius:15px; margin-bottom:15px; border-left:5px solid #3498db">
-                    <h4 style="margin:0 0 10px 0">🌊 Salamoia</h4>`;
-            for (const [ing, q] of Object.entries(ricetta.salamoia)) {
-                let v = (typeof q === 'number') ? (q * qty) + " g" : q;
-                html += `<div class="riga-ingrediente"><span>${ing}</span><strong>${v}</strong></div>`;
-            }
-            html += `</div>`;
-        }
-
-        if (ricetta.passaggi && ricetta.passaggi.length > 0) {
-            html += `<div class="procedimento-card"><h4>📝 Il Tuo Procedimento</h4>`;
-            ricetta.passaggi.forEach((step, index) => {
-                let stepDinamico = step.replace(/\{\{(.*?)\}\}/g, (match, p1) => {
-                    return `<span style="color:var(--primary-color); font-weight:bold">${dosiFinali[p1] || p1}g</span>`;
-                });
-                html += `<div style="display:flex; margin-bottom:10px; font-size:14px;"><div style="background:var(--primary-color); color:white; min-width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:10px; font-size:10px;">${index+1}</div>${stepDinamico}</div>`;
-            });
-            html += `</div>`;
-        }
-        const res = document.getElementById('risultato');
-        res.innerHTML = html; res.style.display = 'block';
-        res.scrollIntoView({ behavior: 'smooth' });
     }
+
+    // Procedimento
+    if (r.passaggi && r.passaggi.length > 0) {
+        html += `<div class="proc-card">
+            <div class="section-title">📋 Procedimento</div>`;
+        r.passaggi.forEach((step, i) => {
+            const stepDin = step.replace(/\{\{(.*?)\}\}/g, (m, p) =>
+                `<strong style="color:var(--terra)">${dosiF[p] || p}</strong>`);
+            html += `<div class="step"><div class="step-num">${i+1}</div><div>${stepDin}</div></div>`;
+        });
+        html += `</div>`;
+    }
+
+    // Pulsanti Pro Skills / Risoluzione Problemi
+    if (r.proSkills || r.problemi) {
+        html += `<div class="extra-btns">`;
+        if (r.proSkills) html += `<button class="btn-extra pro" onclick="openProModal()">💡 Pro Skills</button>`;
+        if (r.problemi)  html += `<button class="btn-extra problems" onclick="openProblemModal()">🔧 Risoluzione Problemi</button>`;
+        html += `</div>`;
+    }
+
+    // Azioni
+    html += `<div class="action-row">
+        <button class="btn-action" onclick="stampaPDF()">🖨️ Stampa / PDF</button>
+        <button class="btn-action primary" onclick="scaricaTesto()">💾 Salva ricetta</button>
+    </div>`;
+
+    const res = document.getElementById('risultato');
+    res.innerHTML = html;
+    res.style.display = 'block';
+    setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+// ── MODAL INFO ────────────────────────────────────────────────────────────────
+function openProModal() {
+    const r = RICETTE[catAttiva][idAttivo];
+    if (!r || !r.proSkills) return;
+    let html = '';
+    r.proSkills.forEach(s => {
+        html += `<div class="skill-item"><h4>${s.titolo}</h4><p>${s.testo}</p></div>`;
+    });
+    document.getElementById('proModalBody').innerHTML = html;
+    document.getElementById('proModal').style.display = 'flex';
+}
+
+function openProblemModal() {
+    const r = RICETTE[catAttiva][idAttivo];
+    if (!r || !r.problemi) return;
+    let html = '';
+    r.problemi.forEach(p => {
+        html += `<div class="problem-item">
+            <h4>${p.titolo}</h4>
+            <div class="problem-causa"><strong>Causa:</strong> ${p.causa}</div>
+            <div class="problem-sol"><strong>Soluzione:</strong> ${p.soluzione}</div>
+        </div>`;
+    });
+    document.getElementById('problemModalBody').innerHTML = html;
+    document.getElementById('problemModal').style.display = 'flex';
+}
+
+function closeInfoModal(id) { document.getElementById(id).style.display = 'none'; }
+
+// ── AZIONI ────────────────────────────────────────────────────────────────────
+function stampaPDF() { window.print(); }
+
+function scaricaTesto() {
+    const r = RICETTE[catAttiva][idAttivo];
+    if (!r) return;
+    const qty = parseInt(document.getElementById('quantita').value) || 1;
+    const pesoPanetto = parseFloat(document.getElementById('peso-panetto').value);
+    const target = pesoPanetto * qty;
+
+    let dosi = {};
+    if (r.tipo === "percentuale") {
+        const sum = Object.values(r.ingredienti).reduce((a,b)=>a+b,0);
+        const fBase = target/(sum/100);
+        for(const [k,v] of Object.entries(r.ingredienti)) dosi[k]=arrotonda((fBase*v)/100,k);
+    } else {
+        const riferimento = r.pesoBase ? r.pesoBase : Object.values(r.ingredienti).reduce((a,b)=>a+b,0);
+        const m = target / riferimento;
+        for(const [k,v] of Object.entries(r.ingredienti)) dosi[k]=arrotonda(v*m,k);
+    }
+
+    let testo = `ROBELLA BAKERY — ${r.nome.toUpperCase()}\n`;
+    testo += `${'='.repeat(40)}\n`;
+    testo += `Quantità: ${qty} panetti da ${pesoPanetto} g\n\n`;
+    testo += `INGREDIENTI\n${'-'.repeat(30)}\n`;
+    for (const [k,v] of Object.entries(dosi)) testo += `${k}: ${v} g\n`;
+
+    if (r.passaggi && r.passaggi.length > 0) {
+        testo += `\nPROCEDIMENTO\n${'-'.repeat(30)}\n`;
+        r.passaggi.forEach((step,i) => {
+            // Sostituisci i placeholder {{}} con i valori calcolati
+            let stepConDosi = step.replace(/\{\{(.*?)\}\}/g, (m, p) => `${dosi[p] || p}`);
+            // Rimuovi i tag HTML
+            const pulito = stepConDosi.replace(/<[^>]+>/g,'');
+            testo += `${i+1}. ${pulito}\n\n`;
+        });
+    }
+    testo += `\n— Generato da Robella Bakery Calculator —`;
+
+    const blob = new Blob([testo], { type: 'text/plain;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = `${r.nome.replace(/\s+/g,'-').toLowerCase()}_x${qty}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Chiudi ricerca cliccando fuori
+document.addEventListener('click', e => {
+    const box = document.getElementById('search-results');
+    if (!e.target.closest('.search-wrap')) box.style.display = 'none';
+});
 </script>
 </body>
 </html>
