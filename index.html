@@ -335,6 +335,7 @@
         }
         .ing-row:last-child { border-bottom: none; }
         .ing-row:nth-child(even) { background: rgba(249,244,236,.5); }
+        .ing-row-total { background: var(--warm) !important; border-top: 2px solid var(--gold); }
         .ing-name { color: var(--text); }
         .ing-val { font-weight: 700; color: var(--terra); font-size: 16px; }
 
@@ -1193,6 +1194,8 @@ function calcola() {
     for (const [k, v] of Object.entries(dosiF)) {
         html += `<div class="ing-row"><span class="ing-name">${k}</span><span class="ing-val">${v} g</span></div>`;
     }
+    const pesoTotale = Object.values(dosiF).reduce((a, b) => a + b, 0);
+    html += `<div class="ing-row ing-row-total"><span class="ing-name" style="font-weight:700;color:var(--brown)">⚖️ Peso totale impasto</span><span class="ing-val" style="color:var(--brown);font-size:17px">${Math.round(pesoTotale)} g</span></div>`;
     html += `</div>`;
 
     // Tangzhong
